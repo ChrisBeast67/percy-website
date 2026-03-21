@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Breakout</title>
+    <style>
+        body {
+            background: #0f3460;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        canvas {
+            border: 3px solid #e94560;
+            border-radius: 10px;
+            background: #16213e;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="game" width="500" height="400"></canvas>
+    <script>
+        const c = document.getElementById('game');
+        const ctx = c.getContext('2d');
+        let score = 0;
+        let lives = 3;
+        
+        let paddle = {x: 200, y: 370, w: 100, h: 15};
+        let ball = {x: 250, y: 350, vx: 4, vy: -4, r: 8};
+        let bricks = [];
+        
+        const colors = ['#e94560', '#feca57', '#48dbfb', '#ff9ff3', '#a29bfe'];
+        
+        for(let row=0; row<5; row++) {
+            for(let col=0; col<8; col++) {
+                bricks.push({
+                    x: col*58 + 15,
+                    y: row*25 + 40,
+                    w: 50,
+                    h: 18,
+                    c: colors[row],
+                    active: true
+                });
+            }
+        }
+        
+        document.addEventListener('keydown', e => {
+            if(e.key==='ArrowLeft' && paddle.x > 0) paddle.x -= 20;
+            if(e.key==='ArrowRight' && paddle.x < 400) paddle.x += 20;
+        });
+        
+        c.addEventListener('mousemove', e => {
+            let r = c.getBoundingClientRect();
+            paddle.x = e.clientX - r.left - paddle.w/2;
+        });
+        
+        function update() {
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            
+            if(ball.x < 0 || ball.x > 500) ball.vx *= -1;
+            if(ball.y < 0) ball.vy *= -1;
+            
+            if(ball.y > 370 && ball.y < 385) {
+                if(ball.x > paddle.x && ball.x < paddle.x + paddle.w) {
+                    ball.vy = -Math.abs(ball.vy);
+                    ball.vx += (ball.x - (paddle.x + paddle.w/2)) * 0.1;
+                }
+            }
+            
+            if(ball.y > 400) {
+                lives--;
+                if(lives === 0) {
+                    alert('Game Over! Score: ' + score);
+                    location.reload();
+                }
+                ball.x = 250; ball.y = 350;
+                ball.vx = 4; ball.vy = -4;
+            }
+            
+            bricks.forEach(b => {
+                if(b.active && ball.x > b.x && ball.x < b.x + b.w && ball.y > b.y && ball.y < b.y + b.h) {
+                    b.active = false;
+                    ball.vy *= -1;
+                    score += 10;
+                }
+            });
+            
+            if(bricks.every(b => !b.active)) {
+                alert('You Win! Score: ' + score);
+                location.reload();
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#16213e';
+            ctx.fillRect(0,0,500,400);
+            
+            bricks.forEach(b => {
+                if(b.active) {
+                    ctx.fillStyle = b.c;
+                    ctx.fillRect(b.x, b.y, b.w, b.h);
+                }
+            });
+            
+            ctx.fillStyle = '#e94560';
+            ctx.fillRect(paddle.x, paddle.y, paddle.w, paddle.h);
+            
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI*2);
+            ctx.fill();
+            
+            ctx.font = '20px Arial';
+            ctx.fillText('Score: ' + score, 10, 25);
+            ctx.fillText('Lives: ' + lives, 400, 25);
+        }
+        
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+</html>

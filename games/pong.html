@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pong Game</title>
+    <style>
+        body {
+            background: #0f3460;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        canvas {
+            border: 3px solid #e94560;
+            border-radius: 10px;
+            background: #16213e;
+        }
+        #score {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="score"><span id="p1">0</span> : <span id="p2">0</span></div>
+    <canvas id="game" width="600" height="400"></canvas>
+    <p>Player 1: W/S keys | Player 2: Arrow Up/Down</p>
+    <script>
+        const c = document.getElementById('game');
+        const ctx = c.getContext('2d');
+        let p1 = 0, p2 = 0;
+        
+        let player1 = {x: 20, y: 170, w: 10, h: 60};
+        let player2 = {x: 570, y: 170, w: 10, h: 60};
+        let ball = {x: 300, y: 200, vx: 5, vy: 5, s: 10};
+        
+        let keys = {};
+        document.addEventListener('keydown', e => keys[e.key] = true);
+        document.addEventListener('keyup', e => keys[e.key] = false);
+        
+        function update() {
+            // Player 1
+            if(keys['w'] && player1.y > 0) player1.y -= 8;
+            if(keys['s'] && player1.y < 340) player1.y += 8;
+            
+            // Player 2 (AI or player 2)
+            if(keys['ArrowUp'] && player2.y > 0) player2.y -= 8;
+            if(keys['ArrowDown'] && player2.y < 340) player2.y += 8;
+            
+            // Ball
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            
+            // Wall collision
+            if(ball.y < 0 || ball.y > 390) ball.vy *= -1;
+            
+            // Paddle collision
+            if(ball.x < player1.x + player1.w && ball.y > player1.y && ball.y < player1.y + player1.h) {
+                ball.vx = Math.abs(ball.vx) * 1.1;
+                ball.vy += (ball.y - (player1.y + 30)) * 0.1;
+            }
+            if(ball.x > player2.x && ball.y > player2.y && ball.y < player2.y + player2.h) {
+                ball.vx = -Math.abs(ball.vx) * 1.1;
+                ball.vy += (ball.y - (player2.y + 30)) * 0.1;
+            }
+            
+            // Score
+            if(ball.x < 0) { p2++; document.getElementById('p2').innerText = p2; reset(); }
+            if(ball.x > 600) { p1++; document.getElementById('p1').innerText = p1; reset(); }
+        }
+        
+        function reset() {
+            ball.x = 300; ball.y = 200;
+            ball.vx = (Math.random() > 0.5 ? 5 : -5);
+            ball.vy = 5;
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#16213e';
+            ctx.fillRect(0,0,600,400);
+            
+            // Center line
+            ctx.setLineDash([10, 10]);
+            ctx.strokeStyle = '#e94560';
+            ctx.beginPath();
+            ctx.moveTo(300,0); ctx.lineTo(300,400);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Players
+            ctx.fillStyle = '#e94560';
+            ctx.fillRect(player1.x, player1.y, player1.w, player1.h);
+            ctx.fillRect(player2.x, player2.y, player2.w, player2.h);
+            
+            // Ball
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.s, 0, Math.PI*2);
+            ctx.fill();
+        }
+        
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+</html>
