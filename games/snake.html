@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Snake Game</title>
+    <style>
+        body {
+            background: #0f3460;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        canvas {
+            border: 3px solid #e94560;
+            border-radius: 10px;
+            background: #16213e;
+        }
+        #score {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .controls {
+            margin-top: 15px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div id="score">Score: <span id="s">0</span> | High Score: <span id="h">0</span></div>
+    <canvas id="game" width="400" height="400"></canvas>
+    <div class="controls">Use Arrow Keys or WASD to move</div>
+    <script>
+        const c = document.getElementById('game');
+        const ctx = c.getContext('2d');
+        let score = 0;
+        let highScore = 0;
+        let snake = [{x: 200, y: 200}];
+        let apple = {x: 0, y: 0};
+        let dir = {x: 0, y: 0};
+        let nextDir = {x: 0, y: 0};
+        
+        function newApple() {
+            apple.x = Math.floor(Math.random()*19)*20 + 10;
+            apple.y = Math.floor(Math.random()*19)*20 + 10;
+        }
+        newApple();
+        
+        document.addEventListener('keydown', e => {
+            if(e.key==='ArrowLeft' || e.key==='a') nextDir = {x:-20, y:0};
+            if(e.key==='ArrowRight' || e.key==='d') nextDir = {x:20, y:0};
+            if(e.key==='ArrowUp' || e.key==='w') nextDir = {x:0, y:-20};
+            if(e.key==='ArrowDown' || e.key==='s') nextDir = {x:0, y:20};
+            if(nextDir.x !== -dir.x && nextDir.y !== dir.y) dir = nextDir;
+        });
+        
+        function update() {
+            const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+            
+            if(head.x < 10 || head.x > 390 || head.y < 10 || head.y > 390 || snake.some(s => s.x === head.x && s.y === head.y)) {
+                if(score > highScore) highScore = score;
+                alert('Game Over! Score: ' + score);
+                score = 0;
+                snake = [{x: 200, y: 200}];
+                dir = {x: 0, y: 0};
+                newApple();
+            }
+            
+            snake.unshift(head);
+            
+            if(head.x === apple.x && head.y === apple.y) {
+                score += 10;
+                document.getElementById('s').innerText = score;
+                document.getElementById('h').innerText = highScore;
+                newApple();
+            } else {
+                snake.pop();
+            }
+        }
+        
+        function draw() {
+            ctx.fillStyle = '#16213e';
+            ctx.fillRect(0,0,400,400);
+            
+            ctx.strokeStyle = '#333';
+            for(let i=0; i<400; i+=20) {
+                ctx.beginPath();
+                ctx.moveTo(i,0); ctx.lineTo(i,400);
+                ctx.moveTo(0,i); ctx.lineTo(400,i);
+                ctx.stroke();
+            }
+            
+            ctx.fillStyle = '#e94560';
+            snake.forEach(s => {
+                ctx.fillRect(s.x-9, s.y-9, 18, 18);
+            });
+            
+            ctx.font = '20px Arial';
+            ctx.fillText('🍎', apple.x-10, apple.y+7);
+        }
+        
+        function loop() {
+            if(dir.x !== 0 || dir.y !== 0) update();
+            draw();
+            setTimeout(loop, 100);
+        }
+        loop();
+    </script>
+</body>
+</html>
