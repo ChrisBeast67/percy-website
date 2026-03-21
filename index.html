@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percy's World 🐱⚡</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        /* Navigation */
+        nav {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #e94560;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #e94560;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .hero h1 {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: glow 2s infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px #e94560; }
+            50% { text-shadow: 0 0 40px #e94560, 0 0 60px #e94560; }
+        }
+        
+        .hero p {
+            font-size: 24px;
+            color: #aaa;
+            margin-bottom: 40px;
+        }
+        
+        .cta-button {
+            background: #e94560;
+            color: white;
+            padding: 15px 50px;
+            font-size: 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #e94560;
+        }
+        
+        /* Features */
+        .features {
+            padding: 100px 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+        
+        .feature h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #e94560;
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(0,0,0,0.5);
+            padding: 30px;
+            text-align: center;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">⚡ Percy<span>'s World</span></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+    
+    <section class="hero">
+        <h1>🐱 Welcome to Percy's World! ⚡</h1>
+        <p>Fun games, cool stuff, and more!</p>
+        <a href="games.html" class="cta-button">🎮 Play Now!</a>
+    </section>
+    
+    <section class="features">
+        <div class="feature">
+            <div class="feature-icon">🎮</div>
+            <h3>Fun Games</h3>
+            <p>Play exciting games right in your browser!</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">⚡</div>
+            <h3>Fast & Easy</h3>
+            <p>No downloads, just click and play!</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">🎉</div>
+            <h3>Always Updated</h3>
+            <p>New games and features coming soon!</p>
+        </div>
+    </section>
+    
+    <footer>
+        <p>Made by Percy 🐱 with ⚡ | © 2026</p>
+    </footer>
+</body>
+</html>

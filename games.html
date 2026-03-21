@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - Percy's World 🐱⚡</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+            padding-top: 80px;
+        }
+        
+        nav {
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .logo span {
+            color: #e94560;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: #e94560;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 40px;
+            color: #e94560;
+        }
+        
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .game-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .game-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(233,69,96,0.5);
+        }
+        
+        .game-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        
+        .game-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .game-card p {
+            color: #aaa;
+        }
+        
+        #gameFrame {
+            display: none;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: none;
+            border-radius: 20px;
+            background: #0f3460;
+        }
+        
+        .back-btn {
+            display: none;
+            background: #e94560;
+            color: white;
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px auto;
+        }
+        
+        .game-area {
+            display: block;
+        }
+        
+        .game-area.hidden {
+            display: none;
+        }
+        
+        .play-area {
+            display: none;
+        }
+        
+        .play-area.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">⚡ Percy<span>'s World</span></div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="games.html">Games</a></li>
+            <li><a href="about.html">About</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="game-area" id="gameArea">
+            <h1>🎮 Choose a Game!</h1>
+            
+            <div class="game-grid">
+                <div class="game-card" onclick="loadGame('catch')">
+                    <div class="game-icon">🎯</div>
+                    <h3>Catch the Stars</h3>
+                    <p>Collect stars, avoid lightning!</p>
+                </div>
+                
+                <div class="game-card" onclick="loadGame('snake')">
+                    <div class="game-icon">🐍</div>
+                    <h3>Snake Game</h3>
+                    <p>Classic snake - eat apples!</p>
+                </div>
+                
+                <div class="game-card" onclick="loadGame('pong')">
+                    <div class="game-icon">🏓</div>
+                    <h3>Pong</h3>
+                    <p>Classic 2-player pong!</p>
+                </div>
+                
+                <div class="game-card" onclick="loadGame('breakout')">
+                    <div class="game-icon">🧱</div>
+                    <h3>Breakout</h3>
+                    <p>Break all the bricks!</p>
+                </div>
+                
+                <div class="game-card" onclick="loadGame('racing')">
+                    <div class="game-icon">🏎️</div>
+                    <h3>Car Racing</h3>
+                    <p>Dodge cars, go fast!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="play-area" id="playArea">
+            <iframe id="gameFrame" width="600" height="450"></iframe>
+            <button class="back-btn" id="backBtn" onclick="goBack()">🔙 Back to Games</button>
+        </div>
+    </div>
+    
+    <script>
+        function loadGame(game) {
+            document.getElementById('gameArea').classList.add('hidden');
+            document.getElementById('playArea').classList.add('active');
+            document.getElementById('backBtn').style.display = 'block';
+            
+            const frame = document.getElementById('gameFrame');
+            
+            if (game === 'catch') {
+                frame.src = 'games/catch-stars.html';
+            } else if (game === 'snake') {
+                frame.src = 'games/snake.html';
+            } else if (game === 'pong') {
+                frame.src = 'games/pong.html';
+            } else if (game === 'breakout') {
+                frame.src = 'games/breakout.html';
+            } else if (game === 'racing') {
+                frame.src = 'games/racing.html';
+            }
+        }
+        
+        function goBack() {
+            document.getElementById('gameArea').classList.remove('hidden');
+            document.getElementById('playArea').classList.remove('active');
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('gameFrame').src = '';
+        }
+    </script>
+</body>
+</html>
