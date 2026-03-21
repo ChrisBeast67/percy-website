@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Racing</title>
+    <style>
+        body {
+            background: #0f3460;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        canvas {
+            border: 3px solid #e94560;
+            border-radius: 10px;
+            background: #2d3436;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="game" width="400" height="600"></canvas>
+    <script>
+        const c = document.getElementById('game');
+        const ctx = c.getContext('2d');
+        let score = 0;
+        let speed = 5;
+        let gameOver = false;
+        
+        let car = {x: 175, y: 500, w: 50, h: 80};
+        let obstacles = [];
+        let road = {x: 50, w: 300};
+        let lineOffset = 0;
+        
+        document.addEventListener('keydown', e => {
+            if(e.key==='ArrowLeft' && car.x > road.x) car.x -= 15;
+            if(e.key==='ArrowRight' && car.x < road.x + road.w - car.w) car.x += 15;
+        });
+        
+        c.addEventListener('mousemove', e => {
+            let r = c.getBoundingClientRect();
+            car.x = e.clientX - r.left - car.w/2;
+            if(car.x < road.x) car.x = road.x;
+            if(car.x > road.x + road.w - car.w) car.x = road.x + road.w - car.w;
+        });
+        
+        function update() {
+            if(gameOver) return;
+            
+            // Road lines
+            lineOffset += speed;
+            if(lineOffset > 60) lineOffset = 0;
+            
+            // Spawn obstacles
+            if(Math.random() < 0.03) {
+                obstacles.push({
+                    x: road.x + Math.random() * (road.w - 50),
+                    y: -80,
+                    w: 50,
+                    h: 80,
+                    type: Math.random() > 0.5 ? '🚗' : '🛑'
+                });
+            }
+            
+            // Move obstacles
+            obstacles.forEach((obs, i) => {
+                obs.y += speed;
+                
+                // Collision
+                if(car.x < obs.x + obs.w && car.x + car.w > obs.x &&
+                   car.y < obs.y + obs.h && car.y + car.h > obs.y) {
+                    gameOver = true;
+                    alert('Game Over! Score: ' + score);
+                    location.reload();
+                }
+                
+                if(obs.y > 600) {
+                    obstacles.splice(i, 1);
+                    score += 10;
+                    if(score % 100 === 0) speed += 1;
+                }
+            });
+        }
+        
+        function draw() {
+            // Road
+            ctx.fillStyle = '#2d3436';
+            ctx.fillRect(0, 0, 400, 600);
+            
+            // Grass
+            ctx.fillStyle = '#27ae60';
+            ctx.fillRect(0, 0, road.x, 600);
+            ctx.fillRect(road.x + road.w, 0, 50, 600);
+            
+            // Road lines
+            ctx.strokeStyle = '#fff';
+            ctx.setLineDash([30, 30]);
+            ctx.lineDashOffset = -lineOffset;
+            ctx.beginPath();
+            ctx.moveTo(road.x + road.w/2, 0);
+            ctx.lineTo(road.x + road.w/2, 600);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            // Obstacles
+            ctx.font = '40px Arial';
+            obstacles.forEach(obs => {
+                ctx.fillText(obs.type, obs.x + 5, obs.y + 40);
+            });
+            
+            // Player car
+            ctx.font = '50px Arial';
+            ctx.fillText('🏎️', car.x, car.y + 45);
+            
+            // Score
+            ctx.fillStyle = '#fff';
+            ctx.font = '24px Arial';
+            ctx.fillText('Score: ' + score, 10, 30);
+            ctx.fillText('Speed: ' + speed, 10, 60);
+        }
+        
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+        loop();
+    </script>
+</body>
+</html>
