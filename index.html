@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Percy World - Discord Server 🐱⚡</title>
+    <title>Percy's World 🐱⚡</title>
     <style>
         * {
             margin: 0;
@@ -16,7 +16,6 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             color: white;
-            overflow-x: hidden;
         }
         
         /* Navigation */
@@ -38,7 +37,7 @@
         }
         
         .logo span {
-            color: #5865F2;
+            color: #e94560;
         }
         
         nav ul {
@@ -55,7 +54,7 @@
         }
         
         nav a:hover {
-            color: #5865F2;
+            color: #e94560;
         }
         
         /* Hero Section */
@@ -70,59 +69,55 @@
         }
         
         .hero h1 {
-            font-size: 70px;
+            font-size: 80px;
             margin-bottom: 20px;
-            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff, #5865F2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: rainbow 3s ease-in-out infinite;
+            animation: glow 2s infinite;
         }
         
-        @keyframes rainbow {
-            0%, 100% { filter: hue-rotate(0deg); }
-            50% { filter: hue-rotate(30deg); }
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px #e94560; }
+            50% { text-shadow: 0 0 40px #e94560, 0 0 60px #e94560; }
         }
         
         .hero p {
             font-size: 24px;
             color: #aaa;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .cta-button {
+            background: #e94560;
+            color: white;
+            padding: 15px 50px;
+            font-size: 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #e94560;
         }
         
         .discord-btn {
             background: #5865F2;
-            color: white;
-            padding: 20px 50px;
-            font-size: 22px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
         }
         
         .discord-btn:hover {
-            transform: scale(1.1);
             box-shadow: 0 0 30px #5865F2;
-        }
-        
-        .mascot {
-            font-size: 80px;
-            margin-bottom: 20px;
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
         }
         
         /* Features */
         .features {
-            padding: 80px 20px;
+            padding: 100px 20px;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
@@ -150,30 +145,7 @@
         .feature h3 {
             font-size: 24px;
             margin-bottom: 15px;
-            color: #5865F2;
-        }
-        
-        /* Emoji Rain */
-        .emoji-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: -1;
-        }
-        
-        .emoji {
-            position: absolute;
-            font-size: 2em;
-            animation: fall linear infinite;
-        }
-        
-        @keyframes fall {
-            0% { transform: translateY(-100px) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
+            color: #e94560;
         }
         
         /* Footer */
@@ -186,10 +158,8 @@
     </style>
 </head>
 <body>
-    <div class="emoji-rain" id="emojiRain"></div>
-    
     <nav>
-        <div class="logo">⚡ Percy <span>World</span></div>
+        <div class="logo">⚡ Percy<span>'s World</span></div>
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="games.html">Games</a></li>
@@ -198,64 +168,34 @@
     </nav>
     
     <section class="hero">
-        <div class="mascot">🐱⚡</div>
-        <h1>Percy World</h1>
-        <p>🎉 The coolest Discord server ever! 🎉</p>
-        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-            <a href="https://discord.gg/bz63K7NY" class="discord-btn" target="_blank">
-                🚀 Join Discord
-            </a>
-            <a href="games.html" class="discord-btn" style="background: #e94560;">
-                🎮 Play Games
-            </a>
+        <h1>🐱 Welcome to Percy's World! ⚡</h1>
+        <p>Fun games, cool stuff, and more!</p>
+        <div class="buttons">
+            <a href="games.html" class="cta-button">🎮 Play Now!</a>
+            <a href="https://discord.gg/bz63K7NY" class="cta-button discord-btn" target="_blank">🚀 Join Discord</a>
         </div>
     </section>
     
     <section class="features">
         <div class="feature">
-            <div class="feature-icon">💬</div>
-            <h3>Chat</h3>
-            <p>Meet awesome people from around the world!</p>
+            <div class="feature-icon">🎮</div>
+            <h3>Fun Games</h3>
+            <p>Play exciting games right in your browser!</p>
         </div>
         <div class="feature">
-            <div class="feature-icon">🎮</div>
-            <h3>Gaming</h3>
-            <p>Play games and compete with friends!</p>
+            <div class="feature-icon">⚡</div>
+            <h3>Fast & Easy</h3>
+            <p>No downloads, just click and play!</p>
         </div>
         <div class="feature">
             <div class="feature-icon">🎉</div>
-            <h3>Events</h3>
-            <p>Fun events, giveaways, and activities!</p>
-        </div>
-        <div class="feature">
-            <div class="feature-icon">🤖</div>
-            <h3>Bots</h3>
-            <p>Smart bots and cool features!</p>
+            <h3>Always Updated</h3>
+            <p>New games and features coming soon!</p>
         </div>
     </section>
     
     <footer>
         <p>Made by Percy 🐱 with ⚡ | © 2026</p>
     </footer>
-    
-    <script>
-        const emojis = ['⭐', '🌟', '💫', '⚡', '🐱', '🎉', '💜', '🎮'];
-        const container = document.getElementById('emojiRain');
-        
-        function createEmoji() {
-            const emoji = document.createElement('div');
-            emoji.className = 'emoji';
-            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            emoji.style.left = Math.random() * 100 + '%';
-            emoji.style.animationDuration = (Math.random() * 3 + 5) + 's';
-            container.appendChild(emoji);
-            
-            setTimeout(() => {
-                emoji.remove();
-            }, 8000);
-        }
-        
-        setInterval(createEmoji, 500);
-    </script>
 </body>
 </html>
