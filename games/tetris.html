@@ -27,14 +27,15 @@
             -webkit-user-select: none;
         }
         
+        /* Yellow handheld console body */
         .console {
             background: #FFD700;
             border-radius: 30px;
-            padding: 15px;
+            padding: 20px;
             box-shadow: 
                 0 10px 30px rgba(0,0,0,0.5),
                 inset 0 -5px 20px rgba(0,0,0,0.2);
-            max-width: 350px;
+            max-width: 360px;
             width: 100%;
         }
         
@@ -43,23 +44,25 @@
             color: #333;
             font-size: 14px;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             letter-spacing: 2px;
         }
         
+        /* Dark screen border */
         .screen-border {
             background: #222;
-            border-radius: 12px;
-            padding: 8px;
-            margin-bottom: 12px;
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 15px;
         }
         
+        /* Green LCD screen */
         .screen {
             background: #9BBC0F;
-            border-radius: 8px;
-            padding: 8px;
+            border-radius: 10px;
+            padding: 10px;
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
         
         #tetris {
@@ -68,65 +71,68 @@
             display: block;
         }
         
+        /* Info panel on right */
         .info-panel {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            min-width: 55px;
+            gap: 8px;
+            min-width: 60px;
             font-family: 'Courier New', monospace;
         }
         
         .info-item {
             background: #8BAC0F;
             border: 2px solid #333;
-            padding: 4px;
+            padding: 5px;
             text-align: center;
         }
         
         .info-item .label {
-            font-size: 7px;
+            font-size: 8px;
             color: #333;
             font-weight: bold;
         }
         
         .info-item .value {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             color: #0F380F;
         }
         
         #next {
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: #8BAC0F;
             border: 2px solid #333;
             margin: 0 auto;
         }
         
+        /* Control buttons area */
         .controls-area {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
+        /* Function buttons (green/red) */
         .func-buttons {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
         
         .func-btn {
-            width: 32px;
-            height: 22px;
-            border-radius: 6px;
+            width: 35px;
+            height: 25px;
+            border-radius: 8px;
             border: none;
-            font-size: 7px;
+            font-size: 8px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+            box-shadow: 0 3px 0 rgba(0,0,0,0.3);
         }
         
         .func-btn.green {
@@ -139,67 +145,82 @@
             color: #8B0000;
         }
         
-        .func-btn:active {
-            transform: translateY(1px);
+        .func-btn:active, .func-btn.pressed {
+            transform: translateY(2px);
             box-shadow: 0 1px 0 rgba(0,0,0,0.3);
         }
         
+        /* Directional pad */
         .dpad {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
         }
         
         .dpad-row {
             display: flex;
-            gap: 4px;
+            gap: 5px;
         }
         
         .dpad-btn {
-            width: 38px;
-            height: 38px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: #4169E1;
             border: none;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 0 #1E3A8A;
+            box-shadow: 0 4px 0 #1E3A8A;
         }
         
         .dpad-btn:active, .dpad-btn.pressed {
-            transform: translateY(2px);
+            transform: translateY(3px);
             box-shadow: 0 1px 0 #1E3A8A;
             background: #3152B5;
         }
         
         .dpad-btn.drop {
-            width: 45px;
+            width: 50px;
         }
         
         .drop-label {
-            font-size: 7px;
+            font-size: 8px;
             color: #333;
             text-align: center;
-            margin-top: 2px;
+            margin-top: 3px;
         }
         
+        /* Side decorations */
+        .side-blocks {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            opacity: 0.2;
+            display: none;
+        }
+        
+        .left-blocks { left: 5px; }
+        .right-blocks { right: 5px; }
+        
+        /* Mobile responsive */
         @media (max-width: 380px) {
             .console {
-                padding: 10px;
+                padding: 12px;
             }
             
             #tetris {
-                width: 160px;
+                width: 170px;
                 height: 280px;
             }
             
             .info-panel {
-                min-width: 40px;
+                min-width: 45px;
             }
             
             #next {
@@ -208,23 +229,31 @@
             }
             
             .dpad-btn {
-                width: 32px;
-                height: 32px;
+                width: 34px;
+                height: 34px;
             }
             
             .dpad-btn.drop {
-                width: 38px;
+                width: 40px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Decorative blocks on sides -->
+    <div class="side-blocks left-blocks">
+        🟦<br>🟩<br>🟪
+    </div>
+    <div class="side-blocks right-blocks">
+        🟧<br>🟥<br>🟦
+    </div>
+    
     <div class="console">
-        <div class="title">TETRIS</div>
+        <div class="title">TETRIS 俄罗斯方块</div>
         
         <div class="screen-border">
             <div class="screen">
-                <canvas id="tetris" width="160" height="280"></canvas>
+                <canvas id="tetris" width="170" height="280"></canvas>
                 
                 <div class="info-panel">
                     <div class="info-item">
@@ -244,7 +273,7 @@
                     
                     <div class="info-item">
                         <div class="label">NEXT</div>
-                        <canvas id="next" width="45" height="45"></canvas>
+                        <canvas id="next" width="50" height="50"></canvas>
                     </div>
                 </div>
             </div>
@@ -294,13 +323,7 @@
         };
         
         const PIECES = [
-            [Z, "Z"],
-            [S, "S"],
-            [T, "T"],
-            [O, "O"],
-            [L, "L"],
-            [I, "I"],
-            [J, "J"]
+            [Z, "Z"], [S, "S"], [T, "T"], [O, "O"], [L, "L"], [I, "I"], [J, "J"]
         ];
         
         function Z() { return [[1,1,0],[0,1,1],[0,0,0]]; }
@@ -331,12 +354,7 @@
         }
         
         function drawSquare(x, y, color, ctx = context) {
-            if (!color) {
-                ctx.fillStyle = "#8BAC0F";
-                ctx.fillRect(x * SQ, y * SQ, SQ - 1, SQ - 1);
-                return;
-            }
-            ctx.fillStyle = color;
+            ctx.fillStyle = color || "#8BAC0F";
             ctx.fillRect(x * SQ, y * SQ, SQ - 1, SQ - 1);
             ctx.strokeStyle = "#0F380F";
             ctx.lineWidth = 1;
@@ -448,6 +466,7 @@
                     if (!this.activeTetromino[r][c]) continue;
                     if (this.y + r < 0) {
                         gameOver = true;
+                        alert("Game Over!\nScore: " + score);
                         return;
                     }
                     board[this.y + r][this.x + c] = this.type;
@@ -483,13 +502,13 @@
         
         function drawNext() {
             nextContext.fillStyle = "#8BAC0F";
-            nextContext.fillRect(0, 0, 45, 45);
+            nextContext.fillRect(0, 0, 50, 50);
             
             let pattern = nextP.tetromino;
             let color = nextP.color;
             let size = pattern.length;
-            let offsetX = (45 - size * 10) / 2;
-            let offsetY = (45 - size * 10) / 2;
+            let offsetX = (50 - size * 10) / 2;
+            let offsetY = (50 - size * 10) / 2;
             
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
@@ -545,43 +564,33 @@
             requestAnimationFrame(update);
         }
         
-        // Button controls
+        // Button functions
         function moveLeft() { if (p && !paused && !gameOver) p.moveLeft(); }
         function moveRight() { if (p && !paused && !gameOver) p.moveRight(); }
         function moveDown() { if (p && !paused && !gameOver) { p.moveDown(); dropStart = Date.now(); } }
         function rotate() { if (p && !paused && !gameOver) p.rotate(); }
         function hardDrop() { if (p && !paused && !gameOver) p.hardDrop(); }
         
-        // Touch events for buttons
-        const setupButton = (id, action) => {
+        // Setup button events
+        const setupBtn = (id, action) => {
             const btn = document.getElementById(id);
-            btn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                action();
-                btn.classList.add('pressed');
-            });
-            btn.addEventListener('touchend', (e) => {
-                e.preventDefault();
-                btn.classList.remove('pressed');
-            });
+            btn.addEventListener('touchstart', (e) => { e.preventDefault(); action(); btn.classList.add('pressed'); });
+            btn.addEventListener('touchend', (e) => { e.preventDefault(); btn.classList.remove('pressed'); });
             btn.addEventListener('mousedown', () => { action(); btn.classList.add('pressed'); });
             btn.addEventListener('mouseup', () => btn.classList.remove('pressed'));
             btn.addEventListener('mouseleave', () => btn.classList.remove('pressed'));
         };
         
-        setupButton('leftBtn', moveLeft);
-        setupButton('rightBtn', moveRight);
-        setupButton('downBtn', moveDown);
-        setupButton('rotateBtn', rotate);
-        setupButton('dropBtn', hardDrop);
+        setupBtn('leftBtn', moveLeft);
+        setupBtn('rightBtn', moveRight);
+        setupBtn('downBtn', moveDown);
+        setupBtn('rotateBtn', rotate);
+        setupBtn('dropBtn', hardDrop);
         
-        document.getElementById('pauseBtn').addEventListener('click', () => {
-            paused = !paused;
-        });
-        
+        document.getElementById('pauseBtn').addEventListener('click', () => { paused = !paused; });
         document.getElementById('restartBtn').addEventListener('click', startGame);
         
-        // Keyboard controls
+        // Keyboard
         document.addEventListener('keydown', (e) => {
             if (gameOver || paused) return;
             if (e.keyCode == 37) moveLeft();
@@ -590,6 +599,30 @@
             else if (e.keyCode == 40) moveDown();
             else if (e.keyCode == 32) { e.preventDefault(); hardDrop(); }
         });
+        
+        // Touch swipe on game area
+        let touchStartX = 0, touchStartY = 0;
+        
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+        }, { passive: false });
+        
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (gameOver || paused) return;
+            
+            let touchEndX = e.changedTouches[0].clientX;
+            let touchEndY = e.changedTouches[0].clientY;
+            let dx = touchEndX - touchStartX;
+            let dy = touchEndY - touchStartY;
+            let ax = Math.abs(dx), ay = Math.abs(dy);
+            
+            if (ax < 20 && ay < 20) rotate();
+            else if (ax > ay) { dx > 30 ? moveRight() : dx < -30 ? moveLeft() : 0; }
+            else { dy > 30 ? moveDown() : dy < -30 ? rotate() : 0; }
+        }, { passive: false });
         
         startGame();
     </script>
