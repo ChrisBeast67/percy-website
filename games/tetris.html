@@ -12,227 +12,324 @@
         }
         
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Courier New', monospace;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: white;
             padding: 10px;
             touch-action: none;
             overflow: hidden;
         }
         
-        h1 {
-            font-size: 2em;
+        /* Handheld Console Body */
+        .console {
+            background: #FFD700;
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.5),
+                inset 0 -5px 20px rgba(0,0,0,0.2);
+            max-width: 360px;
+            width: 100%;
+        }
+        
+        /* Title */
+        .title {
+            text-align: center;
+            color: #333;
+            font-size: 14px;
+            font-weight: bold;
             margin-bottom: 10px;
-            background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
         }
         
-        .game-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-start;
+        /* Screen Area */
+        .screen-border {
+            background: #222;
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 15px;
         }
         
-        canvas {
-            border: 4px solid #4d96ff;
+        .screen {
+            background: #9BBC0F;
             border-radius: 10px;
-            background: #0a0a1a;
-            box-shadow: 0 0 30px rgba(77, 150, 255, 0.3);
+            padding: 10px;
+            display: flex;
+            gap: 10px;
         }
         
+        /* Game Area */
         #tetris {
+            border: 2px solid #333;
+            background: #8BAC0F;
             display: block;
         }
         
-        .info {
+        /* Info Panel */
+        .info-panel {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            min-width: 100px;
+            gap: 8px;
+            min-width: 60px;
+            font-family: 'Courier New', monospace;
         }
         
-        .info-box {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 15px;
+        .info-item {
+            background: #8BAC0F;
+            border: 2px solid #333;
+            padding: 5px;
             text-align: center;
         }
         
-        .info-box h3 {
-            color: #ffd93d;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-        
-        .info-box .value {
-            font-size: 1.5em;
+        .info-item .label {
+            font-size: 8px;
+            color: #333;
             font-weight: bold;
         }
         
-        .next-piece {
-            width: 80px;
-            height: 80px;
-            background: #0a0a1a;
-            border: 2px solid #4d96ff;
-            border-radius: 5px;
+        .info-item .value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #0F380F;
+        }
+        
+        #next {
+            width: 50px;
+            height: 50px;
+            background: #8BAC0F;
+            border: 2px solid #333;
             margin: 0 auto;
         }
         
-        .btn {
-            background: #e94560;
-            color: white;
+        /* Control Buttons */
+        .controls-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Function Buttons */
+        .func-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .func-btn {
+            width: 35px;
+            height: 25px;
+            border-radius: 8px;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 25px;
+            font-size: 8px;
+            font-weight: bold;
             cursor: pointer;
-            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.3);
         }
         
-        .btn:hover {
-            transform: scale(1.05);
+        .func-btn.green {
+            background: #00FF00;
+            color: #006400;
         }
         
-        /* Touch Controls */
-        .touch-controls {
-            display: none;
-            margin-top: 20px;
-            gap: 10px;
+        .func-btn.red {
+            background: #FF0000;
+            color: #8B0000;
         }
         
-        .touch-btn {
-            width: 60px;
-            height: 60px;
-            background: rgba(77, 150, 255, 0.3);
-            border: 2px solid #4d96ff;
-            border-radius: 15px;
-            font-size: 24px;
+        .func-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+        }
+        
+        /* Directional Pad */
+        .dpad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .dpad-row {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .dpad-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4169E1;
+            border: none;
             color: white;
+            font-size: 16px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            user-select: none;
-            -webkit-user-select: none;
+            box-shadow: 0 4px 0 #1E3A8A;
         }
         
-        .touch-btn:active {
-            background: rgba(77, 150, 255, 0.6);
+        .dpad-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #1E3A8A;
         }
         
-        .touch-row {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
+        .dpad-btn.drop {
+            background: #4169E1;
+            width: 50px;
         }
         
-        .controls-info {
+        /* Drop button label */
+        .drop-label {
+            font-size: 8px;
+            color: #333;
             text-align: center;
-            color: #aaa;
-            font-size: 12px;
-            margin-top: 10px;
+            margin-top: 3px;
         }
         
-        .controls-info kbd {
-            background: rgba(255,255,255,0.2);
-            padding: 3px 8px;
-            border-radius: 5px;
-            margin: 2px;
+        /* Side decorations */
+        .side-blocks {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            opacity: 0.3;
         }
         
-        a {
-            color: #4d96ff;
-            text-decoration: none;
-            margin-top: 15px;
-            font-size: 14px;
+        .left-blocks {
+            left: 10px;
         }
         
-        /* Mobile styles */
-        @media (max-width: 600px) {
-            .game-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .info {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .info-box {
+        .right-blocks {
+            right: 10px;
+        }
+        
+        /* Touch overlay for mobile */
+        .touch-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+        }
+        
+        @media (max-width: 400px) {
+            .console {
                 padding: 10px;
-                min-width: 70px;
             }
             
-            .touch-controls {
-                display: flex;
-                flex-direction: column;
+            .screen {
+                padding: 5px;
             }
             
             #tetris {
-                width: 240px;
-                height: 400px;
+                width: 180px;
+                height: 300px;
+            }
+            
+            .info-panel {
+                min-width: 45px;
             }
             
             #next {
-                width: 60px;
-                height: 60px;
+                width: 35px;
+                height: 35px;
+            }
+            
+            .dpad-btn {
+                width: 35px;
+                height: 35px;
             }
         }
+        
+        /* Desktop clickable areas for touch simulation */
+        .game-click-area {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            z-index: 50;
+        }
+        
+        .game-click-area.left { left: 0; }
+        .game-click-area.right { right: 0; left: auto; }
     </style>
 </head>
 <body>
-    <h1>🧱 Tetris</h1>
+    <!-- Side decorations -->
+    <div class="side-blocks left-blocks">
+        🟦🟦<br>🟩🟩<br>🟪🟪
+    </div>
+    <div class="side-blocks right-blocks">
+        🟧🟧<br>🟥🟥<br>🟦🟦
+    </div>
     
-    <div class="game-container">
-        <canvas id="tetris" width="240" height="400"></canvas>
+    <div class="console">
+        <div class="title">TETRIS 俄罗斯方块</div>
         
-        <div class="info">
-            <div class="info-box">
-                <h3>Score</h3>
-                <div class="value" id="score">0</div>
+        <div class="screen-border">
+            <div class="screen">
+                <canvas id="tetris" width="180" height="300"></canvas>
+                
+                <div class="info-panel">
+                    <div class="info-item">
+                        <div class="label">SCORE</div>
+                        <div class="value" id="score">0</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="label">LINES</div>
+                        <div class="value" id="lines">0</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="label">LEVEL</div>
+                        <div class="value" id="level">1</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="label">NEXT</div>
+                        <canvas id="next" width="50" height="50"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls-area">
+            <div class="func-buttons">
+                <button class="func-btn green" onclick="togglePause()">⏸<br>P</button>
+                <button class="func-btn red" onclick="startGame()">🔄<br>R</button>
             </div>
             
-            <div class="info-box">
-                <h3>Level</h3>
-                <div class="value" id="level">1</div>
+            <div class="dpad">
+                <div class="dpad-row">
+                    <button class="dpad-btn" ontouchstart="rotate()">↻</button>
+                </div>
+                <div class="dpad-row">
+                    <button class="dpad-btn" ontouchstart="moveLeft()">←</button>
+                    <button class="dpad-btn" ontouchstart="moveDown()">↓</button>
+                    <button class="dpad-btn" ontouchstart="moveRight()">→</button>
+                </div>
+                <div class="dpad-row">
+                    <button class="dpad-btn drop" ontouchstart="hardDrop()">⤵</button>
+                </div>
+                <div class="drop-label">DROP</div>
             </div>
-            
-            <div class="info-box">
-                <h3>Next</h3>
-                <canvas id="next" class="next-piece" width="80" height="80"></canvas>
-            </div>
-            
-            <button class="btn" onclick="startGame()">🎮 New Game</button>
-            
-            <div class="controls-info">
-                <p><kbd>←</kbd> <kbd>→</kbd> Move</p>
-                <p><kbd>↓</kbd> Drop | <kbd>↑</kbd> Rotate</p>
-            </div>
-            
-            <a href="games.html">← Back to Games</a>
         </div>
     </div>
     
-    <!-- Touch Controls for Mobile -->
-    <div class="touch-controls">
-        <div class="touch-row">
-            <div class="touch-btn" ontouchstart="rotate()">↻</div>
-        </div>
-        <div class="touch-row">
-            <div class="touch-btn" ontouchstart="moveLeft()">←</div>
-            <div class="touch-btn" ontouchstart="moveDown()">↓</div>
-            <div class="touch-btn" ontouchstart="moveRight()">→</div>
-        </div>
-    </div>
+    <!-- Touch zones for swipes -->
+    <div class="touch-overlay" id="touchOverlay"></div>
 
     <script>
         const canvas = document.getElementById('tetris');
@@ -240,18 +337,18 @@
         const nextCanvas = document.getElementById('next');
         const nextContext = nextCanvas.getContext('2d');
         
-        const ROW = 20;
-        const COL = 12;
+        const ROW = 15;
+        const COL = 9;
         const SQ = 20;
         
         const PIECES = [
-            [Z, "red"],
-            [S, "green"],
-            [T, "purple"],
-            [O, "yellow"],
-            [L, "orange"],
-            [I, "cyan"],
-            [J, "blue"]
+            [Z, "#CC0000"],
+            [S, "#00CC00"],
+            [T, "#9900CC"],
+            [O, "#CCCC00"],
+            [L, "#FF6600"],
+            [I, "#00CCCC"],
+            [J, "#3333FF"]
         ];
         
         function Z() { return [[1,1,0],[0,1,1],[0,0,0]]; }
@@ -264,15 +361,16 @@
         
         let board = [];
         let score = 0;
+        let lines = 0;
         let level = 1;
         let gameOver = false;
+        let paused = false;
         let dropStart = Date.now();
         let p, nextP;
         
         // Touch control variables
         let touchStartX = 0;
         let touchStartY = 0;
-        let touchStartTime = 0;
         
         function createBoard() {
             board = [];
@@ -285,16 +383,18 @@
         }
         
         function drawSquare(x, y, color, ctx = context) {
-            ctx.fillStyle = color;
-            ctx.fillRect(x * SQ, y * SQ, SQ, SQ);
-            ctx.strokeStyle = "#1a1a2e";
-            ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
+            ctx.fillStyle = color || "#8BAC0F";
+            ctx.fillRect(x * SQ, y * SQ, SQ - 1, SQ - 1);
+            ctx.strokeStyle = "#0F380F";
+            ctx.strokeRect(x * SQ, y * SQ, SQ - 1, SQ - 1);
         }
         
         function drawBoard() {
+            context.fillStyle = "#8BAC0F";
+            context.fillRect(0, 0, COL * SQ, ROW * SQ);
             for (let r = 0; r < ROW; r++) {
                 for (let c = 0; c < COL; c++) {
-                    drawSquare(c, r, board[r][c] ? board[r][c] : "black");
+                    drawSquare(c, r, board[r][c] ? board[r][c] : null);
                 }
             }
         }
@@ -308,7 +408,7 @@
             this.tetromino = tetromino;
             this.color = color;
             this.activeTetromino = this.tetromino;
-            this.x = 3;
+            this.x = Math.floor(COL / 2) - 2;
             this.y = -2;
         }
         
@@ -323,7 +423,7 @@
         }
         
         Piece.prototype.draw = function() { this.fill(this.color); }
-        Piece.prototype.unDraw = function() { this.fill("black"); }
+        Piece.prototype.unDraw = function() { this.fill(null); }
         
         Piece.prototype.moveDown = function() {
             if (!this.collision(0, 1, this.activeTetromino)) {
@@ -365,6 +465,17 @@
             }
         }
         
+        Piece.prototype.hardDrop = function() {
+            while (!this.collision(0, 1, this.activeTetromino)) {
+                this.y++;
+            }
+            this.draw();
+            this.lock();
+            p = nextP;
+            nextP = randomPiece();
+            drawNext();
+        }
+        
         Piece.prototype.collision = function(x, y, piece) {
             for (let r = 0; r < piece.length; r++) {
                 for (let c = 0; c < piece.length; c++) {
@@ -385,7 +496,7 @@
                     if (!this.activeTetromino[r][c]) continue;
                     if (this.y + r < 0) {
                         gameOver = true;
-                        alert("Game Over! Score: " + score);
+                        alert("Game Over!\nScore: " + score);
                         return;
                     }
                     board[this.y + r][this.x + c] = this.color;
@@ -402,41 +513,54 @@
                         for (let c = 0; c < COL; c++) board[y][c] = board[y-1][c];
                     }
                     for (let c = 0; c < COL; c++) board[0][c] = 0;
-                    score += 100 * level;
+                    lines++;
                 }
             }
             
+            score += lines * 100 * level;
             if (score >= level * 500) level++;
+            
             document.getElementById('score').innerText = score;
+            document.getElementById('lines').innerText = lines;
             document.getElementById('level').innerText = level;
             drawBoard();
         }
         
         function drawNext() {
-            nextContext.fillStyle = "black";
-            nextContext.fillRect(0, 0, 80, 80);
+            nextContext.fillStyle = "#8BAC0F";
+            nextContext.fillRect(0, 0, 50, 50);
+            
             let pattern = nextP.tetromino;
             let color = nextP.color;
             let size = pattern.length;
-            let offsetX = (80 - size * 20) / 2;
-            let offsetY = (80 - size * 20) / 2;
+            let offsetX = (50 - size * 10) / 2;
+            let offsetY = (50 - size * 10) / 2;
             
+            nextContext.fillStyle = color || "#8BAC0F";
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
                     if (pattern[r][c]) {
-                        nextContext.fillStyle = color;
-                        nextContext.fillRect(offsetX + c * 20, offsetY + r * 20, 18, 18);
+                        nextContext.fillRect(offsetX + c * 10, offsetY + r * 10, 9, 9);
+                        nextContext.strokeStyle = "#0F380F";
+                        nextContext.strokeRect(offsetX + c * 10, offsetY + r * 10, 9, 9);
                     }
                 }
             }
         }
         
+        function togglePause() {
+            paused = !paused;
+        }
+        
         function startGame() {
             createBoard();
             score = 0;
+            lines = 0;
             level = 1;
             gameOver = false;
+            paused = false;
             document.getElementById('score').innerText = score;
+            document.getElementById('lines').innerText = lines;
             document.getElementById('level').innerText = level;
             p = randomPiece();
             nextP = randomPiece();
@@ -446,6 +570,11 @@
         }
         
         function update() {
+            if (paused || gameOver) {
+                if (!gameOver) requestAnimationFrame(update);
+                return;
+            }
+            
             let now = Date.now();
             let delta = now - dropStart;
             let speed = Math.max(100, 500 - (level - 1) * 50);
@@ -458,58 +587,52 @@
             if (!gameOver) requestAnimationFrame(update);
         }
         
+        // Button functions
+        function moveLeft() { if (p) p.moveLeft(); }
+        function moveRight() { if (p) p.moveRight(); }
+        function moveDown() { if (p) p.moveDown(); }
+        function rotate() { if (p) p.rotate(); }
+        function hardDrop() { if (p) p.hardDrop(); }
+        
         // Keyboard controls
         document.addEventListener('keydown', function(e) {
-            if (gameOver) return;
+            if (gameOver || paused) return;
             if (e.keyCode == 37) moveLeft();
             else if (e.keyCode == 38) rotate();
             else if (e.keyCode == 39) moveRight();
             else if (e.keyCode == 40) moveDown();
+            else if (e.keyCode == 32) hardDrop();
         });
         
-        // Touch controls
-        function moveLeft() { p.moveLeft(); }
-        function moveRight() { p.moveRight(); }
-        function moveDown() { p.moveDown(); }
-        function rotate() { p.rotate(); }
+        // Touch swipe controls
+        const overlay = document.getElementById('touchOverlay');
         
-        // Swipe detection on canvas
-        canvas.addEventListener('touchstart', function(e) {
+        overlay.addEventListener('touchstart', function(e) {
             e.preventDefault();
             touchStartX = e.touches[0].clientX;
             touchStartY = e.touches[0].clientY;
-            touchStartTime = Date.now();
         }, { passive: false });
         
-        canvas.addEventListener('touchmove', function(e) {
+        overlay.addEventListener('touchend', function(e) {
             e.preventDefault();
-        }, { passive: false });
-        
-        canvas.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            if (gameOver) return;
+            if (gameOver || paused) return;
             
             let touchEndX = e.changedTouches[0].clientX;
             let touchEndY = e.changedTouches[0].clientY;
             let deltaX = touchEndX - touchStartX;
             let deltaY = touchEndY - touchStartY;
-            let deltaTime = Date.now() - touchStartTime;
             
-            // Detect swipe or tap
             let absX = Math.abs(deltaX);
             let absY = Math.abs(deltaY);
             
-            if (deltaTime < 300 && absX < 20 && absY < 20) {
-                // Tap - rotate
-                p.rotate();
+            if (absX < 20 && absY < 20) {
+                rotate(); // Tap = rotate
             } else if (absX > absY) {
-                // Horizontal swipe
-                if (deltaX > 30) p.moveRight();
-                else if (deltaX < -30) p.moveLeft();
+                if (deltaX > 30) moveRight();
+                else if (deltaX < -30) moveLeft();
             } else {
-                // Vertical swipe
-                if (deltaY > 30) p.moveDown();
-                else if (deltaY < -30) p.rotate();
+                if (deltaY > 30) moveDown();
+                else if (deltaY < -30) rotate();
             }
         }, { passive: false });
         
