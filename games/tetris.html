@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Tetris - Percy's World</title>
     <style>
         * {
@@ -20,12 +20,14 @@
             align-items: center;
             justify-content: center;
             color: white;
-            padding: 20px;
+            padding: 10px;
+            touch-action: none;
+            overflow: hidden;
         }
         
         h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
+            font-size: 2em;
+            margin-bottom: 10px;
             background: linear-gradient(90deg, #ff6b6b, #ffd93d, #6bcb77, #4d96ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -33,9 +35,10 @@
         
         .game-container {
             display: flex;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
             justify-content: center;
+            align-items: flex-start;
         }
         
         canvas {
@@ -45,52 +48,52 @@
             box-shadow: 0 0 30px rgba(77, 150, 255, 0.3);
         }
         
+        #tetris {
+            display: block;
+        }
+        
         .info {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            min-width: 150px;
+            gap: 15px;
+            min-width: 100px;
         }
         
         .info-box {
             background: rgba(255,255,255,0.1);
-            padding: 20px;
+            padding: 15px;
             border-radius: 15px;
             text-align: center;
         }
         
         .info-box h3 {
             color: #ffd93d;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            font-size: 14px;
         }
         
         .info-box .value {
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: bold;
         }
         
-        .controls {
-            margin-top: 20px;
-            text-align: center;
-            color: #aaa;
-        }
-        
-        .controls kbd {
-            background: rgba(255,255,255,0.2);
-            padding: 5px 10px;
+        .next-piece {
+            width: 80px;
+            height: 80px;
+            background: #0a0a1a;
+            border: 2px solid #4d96ff;
             border-radius: 5px;
-            margin: 2px;
+            margin: 0 auto;
         }
         
         .btn {
             background: #e94560;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 18px;
-            border-radius: 30px;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 25px;
             cursor: pointer;
-            margin-top: 20px;
             transition: transform 0.3s;
         }
         
@@ -98,23 +101,91 @@
             transform: scale(1.05);
         }
         
-        .next-piece {
-            width: 120px;
-            height: 120px;
-            background: #0a0a1a;
+        /* Touch Controls */
+        .touch-controls {
+            display: none;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        
+        .touch-btn {
+            width: 60px;
+            height: 60px;
+            background: rgba(77, 150, 255, 0.3);
             border: 2px solid #4d96ff;
+            border-radius: 15px;
+            font-size: 24px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        .touch-btn:active {
+            background: rgba(77, 150, 255, 0.6);
+        }
+        
+        .touch-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .controls-info {
+            text-align: center;
+            color: #aaa;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        .controls-info kbd {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 8px;
             border-radius: 5px;
-            margin: 0 auto;
+            margin: 2px;
         }
         
         a {
             color: #4d96ff;
             text-decoration: none;
-            margin-top: 20px;
+            margin-top: 15px;
+            font-size: 14px;
         }
         
-        a:hover {
-            text-decoration: underline;
+        /* Mobile styles */
+        @media (max-width: 600px) {
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .info {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .info-box {
+                padding: 10px;
+                min-width: 70px;
+            }
+            
+            .touch-controls {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            #tetris {
+                width: 240px;
+                height: 400px;
+            }
+            
+            #next {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
@@ -137,19 +208,29 @@
             
             <div class="info-box">
                 <h3>Next</h3>
-                <canvas id="next" class="next-piece" width="120" height="120"></canvas>
+                <canvas id="next" class="next-piece" width="80" height="80"></canvas>
             </div>
             
             <button class="btn" onclick="startGame()">🎮 New Game</button>
             
-            <div class="controls">
+            <div class="controls-info">
                 <p><kbd>←</kbd> <kbd>→</kbd> Move</p>
-                <p><kbd>↓</kbd> Soft Drop</p>
-                <p><kbd>↑</kbd> Rotate</p>
-                <p><kbd>Space</kbd> Hard Drop</p>
+                <p><kbd>↓</kbd> Drop | <kbd>↑</kbd> Rotate</p>
             </div>
             
             <a href="games.html">← Back to Games</a>
+        </div>
+    </div>
+    
+    <!-- Touch Controls for Mobile -->
+    <div class="touch-controls">
+        <div class="touch-row">
+            <div class="touch-btn" ontouchstart="rotate()">↻</div>
+        </div>
+        <div class="touch-row">
+            <div class="touch-btn" ontouchstart="moveLeft()">←</div>
+            <div class="touch-btn" ontouchstart="moveDown()">↓</div>
+            <div class="touch-btn" ontouchstart="moveRight()">→</div>
         </div>
     </div>
 
@@ -173,61 +254,13 @@
             [J, "blue"]
         ];
         
-        function Z() {
-            return [
-                [1, 1, 0],
-                [0, 1, 1],
-                [0, 0, 0]
-            ];
-        }
-        
-        function S() {
-            return [
-                [0, 1, 1],
-                [1, 1, 0],
-                [0, 0, 0]
-            ];
-        }
-        
-        function T() {
-            return [
-                [0, 1, 0],
-                [1, 1, 1],
-                [0, 0, 0]
-            ];
-        }
-        
-        function O() {
-            return [
-                [1, 1],
-                [1, 1]
-            ];
-        }
-        
-        function L() {
-            return [
-                [0, 0, 1],
-                [1, 1, 1],
-                [0, 0, 0]
-            ];
-        }
-        
-        function I() {
-            return [
-                [0, 0, 0, 0],
-                [1, 1, 1, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        }
-        
-        function J() {
-            return [
-                [1, 0, 0],
-                [1, 1, 1],
-                [0, 0, 0]
-            ];
-        }
+        function Z() { return [[1,1,0],[0,1,1],[0,0,0]]; }
+        function S() { return [[0,1,1],[1,1,0],[0,0,0]]; }
+        function T() { return [[0,1,0],[1,1,1],[0,0,0]]; }
+        function O() { return [[1,1],[1,1]]; }
+        function L() { return [[0,0,1],[1,1,1],[0,0,0]]; }
+        function I() { return [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]]; }
+        function J() { return [[1,0,0],[1,1,1],[0,0,0]]; }
         
         let board = [];
         let score = 0;
@@ -236,7 +269,13 @@
         let dropStart = Date.now();
         let p, nextP;
         
+        // Touch control variables
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchStartTime = 0;
+        
         function createBoard() {
+            board = [];
             for (let r = 0; r < ROW; r++) {
                 board[r] = [];
                 for (let c = 0; c < COL; c++) {
@@ -268,9 +307,7 @@
         function Piece(tetromino, color) {
             this.tetromino = tetromino;
             this.color = color;
-            this.tetrominoN = 0;
             this.activeTetromino = this.tetromino;
-            
             this.x = 3;
             this.y = -2;
         }
@@ -285,13 +322,8 @@
             }
         }
         
-        Piece.prototype.draw = function() {
-            this.fill(this.color);
-        }
-        
-        Piece.prototype.unDraw = function() {
-            this.fill("black");
-        }
+        Piece.prototype.draw = function() { this.fill(this.color); }
+        Piece.prototype.unDraw = function() { this.fill("black"); }
         
         Piece.prototype.moveDown = function() {
             if (!this.collision(0, 1, this.activeTetromino)) {
@@ -326,7 +358,6 @@
             let nextPattern = this.activeTetromino[0].map((val, index) => 
                 this.activeTetromino.map(row => row[index]).reverse()
             );
-            
             if (!this.collision(0, 0, nextPattern)) {
                 this.unDraw();
                 this.activeTetromino = nextPattern;
@@ -338,10 +369,8 @@
             for (let r = 0; r < piece.length; r++) {
                 for (let c = 0; c < piece.length; c++) {
                     if (!piece[r][c]) continue;
-                    
                     let newX = this.x + c + x;
                     let newY = this.y + r + y;
-                    
                     if (newX < 0 || newX >= COL || newY >= ROW) return true;
                     if (newY < 0) continue;
                     if (board[newY][newX]) return true;
@@ -354,7 +383,6 @@
             for (let r = 0; r < this.activeTetromino.length; r++) {
                 for (let c = 0; c < this.activeTetromino.length; c++) {
                     if (!this.activeTetromino[r][c]) continue;
-                    
                     if (this.y + r < 0) {
                         gameOver = true;
                         alert("Game Over! Score: " + score);
@@ -364,33 +392,21 @@
                 }
             }
             
-            let linesCleared = 0;
             for (let r = 0; r < ROW; r++) {
                 let isLine = true;
                 for (let c = 0; c < COL; c++) {
-                    if (!board[r][c]) {
-                        isLine = false;
-                        break;
-                    }
+                    if (!board[r][c]) { isLine = false; break; }
                 }
                 if (isLine) {
                     for (let y = r; y > 0; y--) {
-                        for (let c = 0; c < COL; c++) {
-                            board[y][c] = board[y-1][c];
-                        }
+                        for (let c = 0; c < COL; c++) board[y][c] = board[y-1][c];
                     }
-                    for (let c = 0; c < COL; c++) {
-                        board[0][c] = 0;
-                    }
-                    linesCleared++;
+                    for (let c = 0; c < COL; c++) board[0][c] = 0;
+                    score += 100 * level;
                 }
             }
             
-            score += linesCleared * 100 * level;
-            if (score >= level * 500) {
-                level++;
-            }
-            
+            if (score >= level * 500) level++;
             document.getElementById('score').innerText = score;
             document.getElementById('level').innerText = level;
             drawBoard();
@@ -398,21 +414,18 @@
         
         function drawNext() {
             nextContext.fillStyle = "black";
-            nextContext.fillRect(0, 0, 120, 120);
-            
+            nextContext.fillRect(0, 0, 80, 80);
             let pattern = nextP.tetromino;
             let color = nextP.color;
             let size = pattern.length;
-            let offsetX = (120 - size * 30) / 2;
-            let offsetY = (120 - size * 30) / 2;
+            let offsetX = (80 - size * 20) / 2;
+            let offsetY = (80 - size * 20) / 2;
             
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
                     if (pattern[r][c]) {
                         nextContext.fillStyle = color;
-                        nextContext.fillRect(offsetX + c * 30, offsetY + r * 30, 28, 28);
-                        nextContext.strokeStyle = "#1a1a2e";
-                        nextContext.strokeRect(offsetX + c * 30, offsetY + r * 30, 28, 28);
+                        nextContext.fillRect(offsetX + c * 20, offsetY + r * 20, 18, 18);
                     }
                 }
             }
@@ -425,11 +438,9 @@
             gameOver = false;
             document.getElementById('score').innerText = score;
             document.getElementById('level').innerText = level;
-            
             p = randomPiece();
             nextP = randomPiece();
             drawNext();
-            
             dropStart = Date.now();
             requestAnimationFrame(update);
         }
@@ -444,34 +455,63 @@
                 dropStart = Date.now();
             }
             
-            if (!gameOver) {
-                requestAnimationFrame(update);
-            }
+            if (!gameOver) requestAnimationFrame(update);
         }
         
+        // Keyboard controls
         document.addEventListener('keydown', function(e) {
             if (gameOver) return;
-            
-            if (e.keyCode == 37) {
-                p.moveLeft();
-            } else if (e.keyCode == 38) {
-                p.rotate();
-            } else if (e.keyCode == 39) {
-                p.moveRight();
-            } else if (e.keyCode == 40) {
-                p.moveDown();
-            } else if (e.keyCode == 32) {
-                // Hard drop
-                while (!p.collision(0, 1, p.activeTetromino)) {
-                    p.y++;
-                }
-                p.draw();
-                p.lock();
-                p = nextP;
-                nextP = randomPiece();
-                drawNext();
-            }
+            if (e.keyCode == 37) moveLeft();
+            else if (e.keyCode == 38) rotate();
+            else if (e.keyCode == 39) moveRight();
+            else if (e.keyCode == 40) moveDown();
         });
+        
+        // Touch controls
+        function moveLeft() { p.moveLeft(); }
+        function moveRight() { p.moveRight(); }
+        function moveDown() { p.moveDown(); }
+        function rotate() { p.rotate(); }
+        
+        // Swipe detection on canvas
+        canvas.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+        }, { passive: false });
+        
+        canvas.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+        
+        canvas.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            if (gameOver) return;
+            
+            let touchEndX = e.changedTouches[0].clientX;
+            let touchEndY = e.changedTouches[0].clientY;
+            let deltaX = touchEndX - touchStartX;
+            let deltaY = touchEndY - touchStartY;
+            let deltaTime = Date.now() - touchStartTime;
+            
+            // Detect swipe or tap
+            let absX = Math.abs(deltaX);
+            let absY = Math.abs(deltaY);
+            
+            if (deltaTime < 300 && absX < 20 && absY < 20) {
+                // Tap - rotate
+                p.rotate();
+            } else if (absX > absY) {
+                // Horizontal swipe
+                if (deltaX > 30) p.moveRight();
+                else if (deltaX < -30) p.moveLeft();
+            } else {
+                // Vertical swipe
+                if (deltaY > 30) p.moveDown();
+                else if (deltaY < -30) p.rotate();
+            }
+        }, { passive: false });
         
         startGame();
     </script>
