@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tetris - Percy's World</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -22,115 +23,110 @@
             padding: 10px;
             touch-action: none;
             overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
         }
         
-        /* Handheld Console Body */
         .console {
             background: #FFD700;
             border-radius: 30px;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 
                 0 10px 30px rgba(0,0,0,0.5),
                 inset 0 -5px 20px rgba(0,0,0,0.2);
-            max-width: 360px;
+            max-width: 350px;
             width: 100%;
         }
         
-        /* Title */
         .title {
             text-align: center;
             color: #333;
             font-size: 14px;
             font-weight: bold;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             letter-spacing: 2px;
         }
         
-        /* Screen Area */
         .screen-border {
             background: #222;
-            border-radius: 15px;
-            padding: 10px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 8px;
+            margin-bottom: 12px;
         }
         
         .screen {
             background: #9BBC0F;
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 8px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         
-        /* Game Area */
         #tetris {
             border: 2px solid #333;
             background: #8BAC0F;
             display: block;
         }
         
-        /* Info Panel */
         .info-panel {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            min-width: 60px;
+            gap: 6px;
+            min-width: 55px;
             font-family: 'Courier New', monospace;
         }
         
         .info-item {
             background: #8BAC0F;
             border: 2px solid #333;
-            padding: 5px;
+            padding: 4px;
             text-align: center;
         }
         
         .info-item .label {
-            font-size: 8px;
+            font-size: 7px;
             color: #333;
             font-weight: bold;
         }
         
         .info-item .value {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: bold;
             color: #0F380F;
         }
         
         #next {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             background: #8BAC0F;
             border: 2px solid #333;
             margin: 0 auto;
         }
         
-        /* Control Buttons */
         .controls-area {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        /* Function Buttons */
         .func-buttons {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         
         .func-btn {
-            width: 35px;
-            height: 25px;
-            border-radius: 8px;
+            width: 32px;
+            height: 22px;
+            border-radius: 6px;
             border: none;
-            font-size: 8px;
+            font-size: 7px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 3px 0 rgba(0,0,0,0.3);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.3);
         }
         
         .func-btn.green {
@@ -144,100 +140,66 @@
         }
         
         .func-btn:active {
-            transform: translateY(2px);
+            transform: translateY(1px);
             box-shadow: 0 1px 0 rgba(0,0,0,0.3);
         }
         
-        /* Directional Pad */
         .dpad {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
         
         .dpad-row {
             display: flex;
-            gap: 5px;
+            gap: 4px;
         }
         
         .dpad-btn {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: #4169E1;
             border: none;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 0 #1E3A8A;
+            box-shadow: 0 3px 0 #1E3A8A;
         }
         
-        .dpad-btn:active {
-            transform: translateY(3px);
+        .dpad-btn:active, .dpad-btn.pressed {
+            transform: translateY(2px);
             box-shadow: 0 1px 0 #1E3A8A;
+            background: #3152B5;
         }
         
         .dpad-btn.drop {
-            background: #4169E1;
-            width: 50px;
+            width: 45px;
         }
         
-        /* Drop button label */
         .drop-label {
-            font-size: 8px;
+            font-size: 7px;
             color: #333;
             text-align: center;
-            margin-top: 3px;
+            margin-top: 2px;
         }
         
-        /* Side decorations */
-        .side-blocks {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            opacity: 0.3;
-        }
-        
-        .left-blocks {
-            left: 10px;
-        }
-        
-        .right-blocks {
-            right: 10px;
-        }
-        
-        /* Touch overlay for mobile */
-        .touch-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 100;
-        }
-        
-        @media (max-width: 400px) {
+        @media (max-width: 380px) {
             .console {
                 padding: 10px;
             }
             
-            .screen {
-                padding: 5px;
-            }
-            
             #tetris {
-                width: 180px;
-                height: 300px;
+                width: 160px;
+                height: 280px;
             }
             
             .info-panel {
-                min-width: 45px;
+                min-width: 40px;
             }
             
             #next {
@@ -246,40 +208,23 @@
             }
             
             .dpad-btn {
-                width: 35px;
-                height: 35px;
+                width: 32px;
+                height: 32px;
+            }
+            
+            .dpad-btn.drop {
+                width: 38px;
             }
         }
-        
-        /* Desktop clickable areas for touch simulation */
-        .game-click-area {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 50%;
-            height: 100%;
-            z-index: 50;
-        }
-        
-        .game-click-area.left { left: 0; }
-        .game-click-area.right { right: 0; left: auto; }
     </style>
 </head>
 <body>
-    <!-- Side decorations -->
-    <div class="side-blocks left-blocks">
-        🟦🟦<br>🟩🟩<br>🟪🟪
-    </div>
-    <div class="side-blocks right-blocks">
-        🟧🟧<br>🟥🟥<br>🟦🟦
-    </div>
-    
     <div class="console">
-        <div class="title">TETRIS 俄罗斯方块</div>
+        <div class="title">TETRIS</div>
         
         <div class="screen-border">
             <div class="screen">
-                <canvas id="tetris" width="180" height="300"></canvas>
+                <canvas id="tetris" width="160" height="280"></canvas>
                 
                 <div class="info-panel">
                     <div class="info-item">
@@ -299,7 +244,7 @@
                     
                     <div class="info-item">
                         <div class="label">NEXT</div>
-                        <canvas id="next" width="50" height="50"></canvas>
+                        <canvas id="next" width="45" height="45"></canvas>
                     </div>
                 </div>
             </div>
@@ -307,29 +252,26 @@
         
         <div class="controls-area">
             <div class="func-buttons">
-                <button class="func-btn green" onclick="togglePause()">⏸<br>P</button>
-                <button class="func-btn red" onclick="startGame()">🔄<br>R</button>
+                <button class="func-btn green" id="pauseBtn">⏸<br>P</button>
+                <button class="func-btn red" id="restartBtn">🔄<br>R</button>
             </div>
             
             <div class="dpad">
                 <div class="dpad-row">
-                    <button class="dpad-btn" ontouchstart="rotate()">↻</button>
+                    <button class="dpad-btn" id="rotateBtn">↻</button>
                 </div>
                 <div class="dpad-row">
-                    <button class="dpad-btn" ontouchstart="moveLeft()">←</button>
-                    <button class="dpad-btn" ontouchstart="moveDown()">↓</button>
-                    <button class="dpad-btn" ontouchstart="moveRight()">→</button>
+                    <button class="dpad-btn" id="leftBtn">←</button>
+                    <button class="dpad-btn" id="downBtn">↓</button>
+                    <button class="dpad-btn" id="rightBtn">→</button>
                 </div>
                 <div class="dpad-row">
-                    <button class="dpad-btn drop" ontouchstart="hardDrop()">⤵</button>
+                    <button class="dpad-btn drop" id="dropBtn">⤵</button>
                 </div>
                 <div class="drop-label">DROP</div>
             </div>
         </div>
     </div>
-    
-    <!-- Touch zones for swipes -->
-    <div class="touch-overlay" id="touchOverlay"></div>
 
     <script>
         const canvas = document.getElementById('tetris');
@@ -337,18 +279,28 @@
         const nextCanvas = document.getElementById('next');
         const nextContext = nextCanvas.getContext('2d');
         
-        const ROW = 15;
-        const COL = 9;
+        const ROW = 14;
+        const COL = 8;
         const SQ = 20;
         
+        const COLORS = {
+            Z: "#CC0000",
+            S: "#00CC00",
+            T: "#9900CC",
+            O: "#CCCC00",
+            L: "#FF6600",
+            I: "#00CCCC",
+            J: "#3333FF"
+        };
+        
         const PIECES = [
-            [Z, "#CC0000"],
-            [S, "#00CC00"],
-            [T, "#9900CC"],
-            [O, "#CCCC00"],
-            [L, "#FF6600"],
-            [I, "#00CCCC"],
-            [J, "#3333FF"]
+            [Z, "Z"],
+            [S, "S"],
+            [T, "T"],
+            [O, "O"],
+            [L, "L"],
+            [I, "I"],
+            [J, "J"]
         ];
         
         function Z() { return [[1,1,0],[0,1,1],[0,0,0]]; }
@@ -368,10 +320,6 @@
         let dropStart = Date.now();
         let p, nextP;
         
-        // Touch control variables
-        let touchStartX = 0;
-        let touchStartY = 0;
-        
         function createBoard() {
             board = [];
             for (let r = 0; r < ROW; r++) {
@@ -383,10 +331,16 @@
         }
         
         function drawSquare(x, y, color, ctx = context) {
-            ctx.fillStyle = color || "#8BAC0F";
+            if (!color) {
+                ctx.fillStyle = "#8BAC0F";
+                ctx.fillRect(x * SQ, y * SQ, SQ - 1, SQ - 1);
+                return;
+            }
+            ctx.fillStyle = color;
             ctx.fillRect(x * SQ, y * SQ, SQ - 1, SQ - 1);
             ctx.strokeStyle = "#0F380F";
-            ctx.strokeRect(x * SQ, y * SQ, SQ - 1, SQ - 1);
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x * SQ + 1, y * SQ + 1, SQ - 3, SQ - 3);
         }
         
         function drawBoard() {
@@ -394,7 +348,7 @@
             context.fillRect(0, 0, COL * SQ, ROW * SQ);
             for (let r = 0; r < ROW; r++) {
                 for (let c = 0; c < COL; c++) {
-                    drawSquare(c, r, board[r][c] ? board[r][c] : null);
+                    drawSquare(c, r, board[r][c] ? COLORS[board[r][c]] : null);
                 }
             }
         }
@@ -404,9 +358,10 @@
             return new Piece(PIECES[r][0](), PIECES[r][1]);
         }
         
-        function Piece(tetromino, color) {
+        function Piece(tetromino, type) {
             this.tetromino = tetromino;
-            this.color = color;
+            this.type = type;
+            this.color = COLORS[type];
             this.activeTetromino = this.tetromino;
             this.x = Math.floor(COL / 2) - 2;
             this.y = -2;
@@ -430,12 +385,9 @@
                 this.unDraw();
                 this.y++;
                 this.draw();
-            } else {
-                this.lock();
-                p = nextP;
-                nextP = randomPiece();
-                drawNext();
+                return true;
             }
+            return false;
         }
         
         Piece.prototype.moveRight = function() {
@@ -496,13 +448,13 @@
                     if (!this.activeTetromino[r][c]) continue;
                     if (this.y + r < 0) {
                         gameOver = true;
-                        alert("Game Over!\nScore: " + score);
                         return;
                     }
-                    board[this.y + r][this.x + c] = this.color;
+                    board[this.y + r][this.x + c] = this.type;
                 }
             }
             
+            let linesCleared = 0;
             for (let r = 0; r < ROW; r++) {
                 let isLine = true;
                 for (let c = 0; c < COL; c++) {
@@ -513,12 +465,15 @@
                         for (let c = 0; c < COL; c++) board[y][c] = board[y-1][c];
                     }
                     for (let c = 0; c < COL; c++) board[0][c] = 0;
-                    lines++;
+                    linesCleared++;
                 }
             }
             
-            score += lines * 100 * level;
-            if (score >= level * 500) level++;
+            if (linesCleared > 0) {
+                lines += linesCleared;
+                score += linesCleared * 100 * level;
+                if (score >= level * 500) level++;
+            }
             
             document.getElementById('score').innerText = score;
             document.getElementById('lines').innerText = lines;
@@ -528,28 +483,24 @@
         
         function drawNext() {
             nextContext.fillStyle = "#8BAC0F";
-            nextContext.fillRect(0, 0, 50, 50);
+            nextContext.fillRect(0, 0, 45, 45);
             
             let pattern = nextP.tetromino;
             let color = nextP.color;
             let size = pattern.length;
-            let offsetX = (50 - size * 10) / 2;
-            let offsetY = (50 - size * 10) / 2;
+            let offsetX = (45 - size * 10) / 2;
+            let offsetY = (45 - size * 10) / 2;
             
-            nextContext.fillStyle = color || "#8BAC0F";
             for (let r = 0; r < size; r++) {
                 for (let c = 0; c < size; c++) {
                     if (pattern[r][c]) {
+                        nextContext.fillStyle = color;
                         nextContext.fillRect(offsetX + c * 10, offsetY + r * 10, 9, 9);
                         nextContext.strokeStyle = "#0F380F";
-                        nextContext.strokeRect(offsetX + c * 10, offsetY + r * 10, 9, 9);
+                        nextContext.strokeRect(offsetX + c * 10 + 1, offsetY + r * 10 + 1, 7, 7);
                     }
                 }
             }
-        }
-        
-        function togglePause() {
-            paused = !paused;
         }
         
         function startGame() {
@@ -570,8 +521,9 @@
         }
         
         function update() {
-            if (paused || gameOver) {
-                if (!gameOver) requestAnimationFrame(update);
+            if (gameOver) return;
+            if (paused) {
+                requestAnimationFrame(update);
                 return;
             }
             
@@ -580,61 +532,64 @@
             let speed = Math.max(100, 500 - (level - 1) * 50);
             
             if (delta > speed) {
-                p.moveDown();
+                if (!p.moveDown()) {
+                    p.lock();
+                    if (gameOver) return;
+                    p = nextP;
+                    nextP = randomPiece();
+                    drawNext();
+                }
                 dropStart = Date.now();
             }
             
-            if (!gameOver) requestAnimationFrame(update);
+            requestAnimationFrame(update);
         }
         
-        // Button functions
-        function moveLeft() { if (p) p.moveLeft(); }
-        function moveRight() { if (p) p.moveRight(); }
-        function moveDown() { if (p) p.moveDown(); }
-        function rotate() { if (p) p.rotate(); }
-        function hardDrop() { if (p) p.hardDrop(); }
+        // Button controls
+        function moveLeft() { if (p && !paused && !gameOver) p.moveLeft(); }
+        function moveRight() { if (p && !paused && !gameOver) p.moveRight(); }
+        function moveDown() { if (p && !paused && !gameOver) { p.moveDown(); dropStart = Date.now(); } }
+        function rotate() { if (p && !paused && !gameOver) p.rotate(); }
+        function hardDrop() { if (p && !paused && !gameOver) p.hardDrop(); }
+        
+        // Touch events for buttons
+        const setupButton = (id, action) => {
+            const btn = document.getElementById(id);
+            btn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                action();
+                btn.classList.add('pressed');
+            });
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                btn.classList.remove('pressed');
+            });
+            btn.addEventListener('mousedown', () => { action(); btn.classList.add('pressed'); });
+            btn.addEventListener('mouseup', () => btn.classList.remove('pressed'));
+            btn.addEventListener('mouseleave', () => btn.classList.remove('pressed'));
+        };
+        
+        setupButton('leftBtn', moveLeft);
+        setupButton('rightBtn', moveRight);
+        setupButton('downBtn', moveDown);
+        setupButton('rotateBtn', rotate);
+        setupButton('dropBtn', hardDrop);
+        
+        document.getElementById('pauseBtn').addEventListener('click', () => {
+            paused = !paused;
+        });
+        
+        document.getElementById('restartBtn').addEventListener('click', startGame);
         
         // Keyboard controls
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', (e) => {
             if (gameOver || paused) return;
             if (e.keyCode == 37) moveLeft();
             else if (e.keyCode == 38) rotate();
             else if (e.keyCode == 39) moveRight();
             else if (e.keyCode == 40) moveDown();
-            else if (e.keyCode == 32) hardDrop();
+            else if (e.keyCode == 32) { e.preventDefault(); hardDrop(); }
         });
-        
-        // Touch swipe controls
-        const overlay = document.getElementById('touchOverlay');
-        
-        overlay.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-        }, { passive: false });
-        
-        overlay.addEventListener('touchend', function(e) {
-            e.preventDefault();
-            if (gameOver || paused) return;
-            
-            let touchEndX = e.changedTouches[0].clientX;
-            let touchEndY = e.changedTouches[0].clientY;
-            let deltaX = touchEndX - touchStartX;
-            let deltaY = touchEndY - touchStartY;
-            
-            let absX = Math.abs(deltaX);
-            let absY = Math.abs(deltaY);
-            
-            if (absX < 20 && absY < 20) {
-                rotate(); // Tap = rotate
-            } else if (absX > absY) {
-                if (deltaX > 30) moveRight();
-                else if (deltaX < -30) moveLeft();
-            } else {
-                if (deltaY > 30) moveDown();
-                else if (deltaY < -30) rotate();
-            }
-        }, { passive: false });
         
         startGame();
     </script>
