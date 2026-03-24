@@ -6,81 +6,48 @@
     <title>Admin - Percy's World</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: white; }
-        .login-box { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; text-align: center; max-width: 350px; width: 100%; }
+        body { background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: white; font-family: Arial; }
+        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; max-width: 350px; width: 100%; text-align: center; }
         h1 { color: #e94560; margin-bottom: 20px; }
-        .input { width: 100%; padding: 15px; border-radius: 10px; border: none; margin-bottom: 15px; font-size: 16px; text-align: center; }
-        .btn { background: #e94560; color: white; border: none; padding: 15px 40px; border-radius: 10px; cursor: pointer; font-size: 16px; }
-        .btn:hover { background: #d63350; }
+        input { width: 100%; padding: 15px; border-radius: 10px; border: none; margin-bottom: 15px; font-size: 16px; }
+        button { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; margin: 5px; }
         .error { color: #ff6b6b; margin-top: 10px; }
-        .admin-panel { display: none; }
-        .card { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; margin-bottom: 15px; text-align: left; }
-        .card h2 { color: #6bcb77; margin-bottom: 10px; }
-        .links { display: flex; flex-wrap: wrap; gap: 10px; }
-        .link-card { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; }
-        .link-card a { color: #4d96ff; text-decoration: none; }
-        .back { display: block; margin-top: 20px; color: #aaa; text-decoration: none; }
+        .panel { display: none; }
+        .links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .link { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; }
+        .link a { color: #4d96ff; text-decoration: none; }
     </style>
 </head>
 <body>
-    <!-- Login -->
-    <div class="login-box" id="loginBox">
-        <h1>⚡ Admin Login</h1>
-        <input type="password" id="password" class="input" placeholder="Enter Password">
-        <button class="btn" onclick="checkPassword()">Login</button>
+    <div class="box" id="loginBox">
+        <h1>🔐 Admin</h1>
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="check()">Login</button>
         <p class="error" id="error"></p>
     </div>
     
-    <!-- Admin Panel -->
-    <div class="admin-panel" id="adminPanel">
-        <div class="login-box">
-            <h1>⚡ Admin Panel</h1>
-            
-            <div class="card">
-                <h2>🌐 Websites</h2>
-                <div class="links">
-                    <div class="link-card"><a href="https://chrisbeast67.github.io/percy-website" target="_blank">🎮 Percy's World</a></div>
-                    <div class="link-card"><a href="https://chrisbeast67.github.io/save-earth" target="_blank">🌍 Save Earth</a></div>
-                </div>
-            </div>
-            
-            <div class="card">
-                <h2>🎮 Games</h2>
-                <p>Available: Snake, Pong, Breakout, Racing, Tetris</p>
-                <br>
-                <a href="owner.html" target="_blank"><button class="btn">👤 Owner Panel</button></a>
-            <a href="games.html"><button class="btn">Open Games</button></a>
-            </div>
-            
-            <div class="card">
-                <h2>📊 Stats</h2>
-                <p>Games: 5</p>
-                <p>Pages: Home, Games, About</p>
-            </div>
-            
-            <a href="index.html" class="back">← Back to Home</a>
-        </div>
+    <div class="box panel" id="adminPanel">
+        <h1>⚡ Admin Panel</h1>
+        <div class="link"><a href="https://chrisbeast67.github.io/percy-website" target="_blank">🎮 Percy's World</a></div>
+        <br>
+        <div class="link"><a href="https://chrisbeast67.github.io/save-earth" target="_blank">🌍 Save Earth</a></div>
+        <br><br>
+        <div class="link"><a href="owner.html">👤 Owner Panel</a></div>
+        <br><br>
+        <a href="index.html" style="color:#888;">← Back</a>
     </div>
     
     <script>
-        // Password: percy123
         const correctPassword = "232917";
         
-        function checkPassword() {
-            const input = document.getElementById('password').value;
-            const error = document.getElementById('error');
-            
-            if (input === correctPassword) {
+        function check() {
+            if (document.getElementById('password').value === correctPassword) {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
             } else {
-                error.textContent = '❌ Wrong password!';
+                document.getElementById('error').textContent = '❌ Wrong password!';
             }
         }
-        
-        document.getElementById('password').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') checkPassword();
-        });
     </script>
 </body>
 </html>
