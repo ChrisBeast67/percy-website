@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art - Percy's World</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; }
+        header { background: rgba(0,0,0,0.9); padding: 20px; position: fixed; width: 100%; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        nav a { color: #aaa; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 25px; transition: all 0.3s; }
+        nav a:hover, nav a.active { background: #e94560; color: white; }
+        .container { max-width: 900px; margin: 100px auto 50px; padding: 20px; }
+        h1 { text-align: center; font-size: 48px; margin-bottom: 20px; }
+        .content { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
+        .content h2 { color: #ffd93d; margin-bottom: 15px; font-size: 28px; }
+        .content p { font-size: 18px; line-height: 1.8; color: #ccc; margin-bottom: 15px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .gallery-item { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; text-align: center; }
+        .gallery-item .icon { font-size: 60px; }
+        footer { background: rgba(0,0,0,0.8); padding: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">🏠 Home</a>
+            <a href="fencing.html">🤺 Fencing</a>
+            <a href="3dprinting.html">🖨️ 3D Print</a>
+            <a href="art.html" class="active">🎨 Art</a>
+            <a href="owner.html">👤 Owner</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>🎨 Art</h1>
+        
+        <div class="content">
+            <h2>Different Art Forms</h2>
+            <p>Art is a diverse range of human activities that involve creating visual, auditory, or performing artifacts.</p>
+        </div>
+        
+        <div class="content">
+            <h2>🖌️ Types of Art</h2>
+            <div class="gallery">
+                <div class="gallery-item">
+                    <div class="icon">🖼️</div>
+                    <p>Painting</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="icon">✏️</div>
+                    <p>Drawing</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="icon">🏺</div>
+                    <p>Sculpture</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="icon">📸</div>
+                    <p>Photography</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="icon">🎮</div>
+                    <p>Digital Art</p>
+                </div>
+                <div class="gallery-item">
+                    <div class="icon">🎭</div>
+                    <p>Performance</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>🌟 Famous Artists</h2>
+            <p>• Leonardo da Vinci - Mona Lisa</p>
+            <p>• Vincent van Gogh - Starry Night</p>
+            <p>• Pablo Picasso - Modern art pioneer</p>
+            <p>• Frida Kahlo - Mexican surrealism</p>
+        </div>
+        
+        <div class="content">
+            <h2>🎨 Create Your Own Art!</h2>
+            <p>You can create art using:</p>
+            <p>• Pencils and paper</p>
+            <p>• Paint (watercolor, acrylic, oil)</p>
+            <p>• Digital tools (Procreate, Photoshop)</p>
+            <p>• Clay and sculpting tools</p>
+            <p>• And much more!</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>⚡ Percy's World © 2026</p>
+    </footer>
+</body>
+</html>
