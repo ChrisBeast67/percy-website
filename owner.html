@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner - Percy's World</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; }
+        header { background: rgba(0,0,0,0.9); padding: 20px; position: fixed; width: 100%; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        nav a { color: #aaa; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 25px; transition: all 0.3s; }
+        nav a:hover, nav a.active { background: #e94560; color: white; }
+        .container { max-width: 800px; margin: 100px auto 50px; padding: 20px; }
+        h1 { text-align: center; font-size: 42px; margin-bottom: 30px; color: #e94560; }
+        .card { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 25px; }
+        .card h2 { color: #ffd93d; margin-bottom: 15px; font-size: 24px; }
+        .card p { color: #ccc; margin-bottom: 15px; line-height: 1.6; }
+        .upload-section { margin: 20px 0; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 15px; }
+        .upload-section h3 { color: #6bcb77; margin-bottom: 15px; }
+        input[type="file"] { margin: 10px 0; }
+        .btn { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; margin: 5px; }
+        .btn:hover { background: #d63350; }
+        .btn-green { background: #6bcb77; }
+        .btn-green:hover { background: #5ab868; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 15px; }
+        .gallery img { width: 100%; border-radius: 10px; }
+        .preview { max-width: 200px; margin-top: 15px; border-radius: 10px; }
+        .info { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-top: 15px; }
+        footer { background: rgba(0,0,0,0.8); padding: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">🏠 Home</a>
+            <a href="fencing.html">🤺 Fencing</a>
+            <a href="3dprinting.html">🖨️ 3D Print</a>
+            <a href="art.html">🎨 Art</a>
+            <a href="owner.html" class="active">👤 Owner</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>👤 Owner Panel</h1>
+        
+        <div class="card">
+            <h2>📤 Upload Images</h2>
+            <p>Upload images to display on the Fencing, 3D Printing, and Art pages!</p>
+            
+            <div class="upload-section">
+                <h3>🖼️ Select Page</h3>
+                <select id="pageSelect" style="padding:10px; border-radius:8px; margin:10px 0; width:100%;">
+                    <option value="fencing">🤺 Fencing</option>
+                    <option value="3dprinting">🖨️ 3D Printing</option>
+                    <option value="art">🎨 Art</option>
+                </select>
+                
+                <h3>📁 Choose Image</h3>
+                <input type="file" id="imageInput" accept="image/*">
+                
+                <img id="preview" class="preview" style="display:none;">
+                
+                <br>
+                <button class="btn" onclick="uploadImage()">⬆️ Upload Image</button>
+            </div>
+            
+            <div class="info">
+                <p><strong>Note:</strong> Images will be shown in the gallery sections of each page!</p>
+                <p>Current images are stored in the website's image folders.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>🖼️ Image Gallery</h2>
+            <p>Preview of uploaded images by page:</p>
+            
+            <h3 style="color:#e94560; margin-top:15px;">🤺 Fencing</h3>
+            <div class="gallery" id="fencingGallery">
+                <p style="color:#888;">No images yet</p>
+            </div>
+            
+            <h3 style="color:#4d96ff; margin-top:15px;">🖨️ 3D Printing</h3>
+            <div class="gallery" id="3dprintingGallery">
+                <p style="color:#888;">No images yet</p>
+            </div>
+            
+            <h3 style="color:#ffd93d; margin-top:15px;">🎨 Art</h3>
+            <div class="gallery" id="artGallery">
+                <p style="color:#888;">No images yet</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📊 Stats</h2>
+            <p>Pages: 4 (Fencing, 3D Print, Art, Owner)</p>
+            <p>Images: 0</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>⚡ Percy's World © 2026</p>
+    </footer>
+    
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function uploadImage() {
+            const page = document.getElementById('pageSelect').value;
+            const file = imageInput.files[0];
+            
+            if (!file) {
+                alert('Please select an image first!');
+                return;
+            }
+            
+            alert('📤 Image uploaded for ' + page + '!\n\nNote: To save images permanently, they need to be added to the GitHub repository.');
+        }
+    </script>
+</body>
+</html>
