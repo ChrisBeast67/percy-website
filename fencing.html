@@ -12,11 +12,14 @@
         nav a { color: #aaa; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 25px; transition: all 0.3s; }
         nav a:hover, nav a.active { background: #e94560; color: white; }
         .container { max-width: 900px; margin: 100px auto 50px; padding: 20px; }
-        h1 { text-align: center; font-size: 48px; margin-bottom: 20px; color: #e94560; }
-        .content { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
-        .content h2 { color: #e94560; margin-bottom: 15px; font-size: 28px; }
-        .content p { font-size: 18px; line-height: 1.8; color: #ccc; margin-bottom: 15px; }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        h1 { text-align: center; font-size: 48px; margin-bottom: 30px; color: #e94560; }
+        .upload-section { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
+        .upload-section h2 { color: #6bcb77; margin-bottom: 15px; }
+        .upload-section p { color: #ccc; margin-bottom: 15px; }
+        input[type="file"] { margin: 10px 0; }
+        .btn { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #d63350; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .gallery img { width: 100%; border-radius: 15px; transition: transform 0.3s; }
         .gallery img:hover { transform: scale(1.05); }
         footer { background: rgba(0,0,0,0.8); padding: 30px; text-align: center; }
@@ -36,38 +39,57 @@
     <div class="container">
         <h1>🤺 Fencing</h1>
         
-        <div class="content">
-            <h2>About Fencing</h2>
-            <p>Fencing is a group of three related combat sports. The three disciplines (Foil, Epée, and Sabre) all use a variety of flexible steel blades, and are practiced competitively.</p>
-            <p>The sport began in Spain and has been described as "the art of the sword."</p>
+        <div class="upload-section">
+            <h2>📤 Upload Image</h2>
+            <p>Upload your fencing photos here!</p>
+            <input type="file" id="imageInput" accept="image/*">
+            <br>
+            <button class="btn" onclick="uploadImage()">Upload</button>
+            <img id="preview" style="display:none; max-width:300px; margin-top:15px; border-radius:15px;">
         </div>
         
-        <div class="content">
-            <h2>🎯 The Three Weapons</h2>
-            <p><strong>Foil:</strong> A light thrusting weapon with a flexible blade. Only touches with the point.</p>
-            <p><strong>Épée:</strong> A heavy thrusting weapon. The entire body is a valid target.</p>
-            <p><strong>Sabre:</strong> A light cutting and thrusting weapon. Targets are above the waist.</p>
-        </div>
-        
-        <div class="content">
-            <h2>🏆 Famous Fencers</h2>
-            <p>• Valentina Vezzali (Italy) - 6 Olympic gold medals</p>
-            <p>• Ibtihaj Muhammad (USA) - First Muslim-American woman to win a medal</p>
-            <p>• Edoardo Mangiarotti (Italy) - 13 Olympic medals</p>
-        </div>
-        
-        <div class="content">
-            <h2>🛡️ Protective Gear</h2>
-            <p>Fencers wear protective gear including:</p>
-            <p>• Mask - Protects the face</p>
-            <p>• Glove - Protects the sword hand</p>
-            <p>• Jacket - Protective outer layer</p>
-            <p>• Breeches - Knee-length pants</p>
+        <div class="upload-section">
+            <h2>🖼️ Gallery</h2>
+            <div class="gallery" id="gallery"></div>
         </div>
     </div>
     
     <footer>
         <p>⚡ Percy's World © 2026</p>
     </footer>
+    
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('preview');
+        
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        function uploadImage() {
+            const file = imageInput.files[0];
+            if (!file) {
+                alert('Please select an image first!');
+                return;
+            }
+            
+            const gallery = document.getElementById('gallery');
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(file);
+            gallery.appendChild(img);
+            
+            alert('✅ Image added to gallery!');
+            imageInput.value = '';
+            preview.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
