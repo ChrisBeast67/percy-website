@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fencing - Percy's World</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; }
+        header { background: rgba(0,0,0,0.9); padding: 20px; position: fixed; width: 100%; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        nav a { color: #aaa; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 25px; transition: all 0.3s; }
+        nav a:hover, nav a.active { background: #e94560; color: white; }
+        .container { max-width: 900px; margin: 100px auto 50px; padding: 20px; }
+        h1 { text-align: center; font-size: 48px; margin-bottom: 20px; color: #e94560; }
+        .content { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
+        .content h2 { color: #e94560; margin-bottom: 15px; font-size: 28px; }
+        .content p { font-size: 18px; line-height: 1.8; color: #ccc; margin-bottom: 15px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .gallery img { width: 100%; border-radius: 15px; transition: transform 0.3s; }
+        .gallery img:hover { transform: scale(1.05); }
+        footer { background: rgba(0,0,0,0.8); padding: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">🏠 Home</a>
+            <a href="fencing.html" class="active">🤺 Fencing</a>
+            <a href="3dprinting.html">🖨️ 3D Print</a>
+            <a href="art.html">🎨 Art</a>
+            <a href="owner.html">👤 Owner</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>🤺 Fencing</h1>
+        
+        <div class="content">
+            <h2>About Fencing</h2>
+            <p>Fencing is a group of three related combat sports. The three disciplines (Foil, Epée, and Sabre) all use a variety of flexible steel blades, and are practiced competitively.</p>
+            <p>The sport began in Spain and has been described as "the art of the sword."</p>
+        </div>
+        
+        <div class="content">
+            <h2>🎯 The Three Weapons</h2>
+            <p><strong>Foil:</strong> A light thrusting weapon with a flexible blade. Only touches with the point.</p>
+            <p><strong>Épée:</strong> A heavy thrusting weapon. The entire body is a valid target.</p>
+            <p><strong>Sabre:</strong> A light cutting and thrusting weapon. Targets are above the waist.</p>
+        </div>
+        
+        <div class="content">
+            <h2>🏆 Famous Fencers</h2>
+            <p>• Valentina Vezzali (Italy) - 6 Olympic gold medals</p>
+            <p>• Ibtihaj Muhammad (USA) - First Muslim-American woman to win a medal</p>
+            <p>• Edoardo Mangiarotti (Italy) - 13 Olympic medals</p>
+        </div>
+        
+        <div class="content">
+            <h2>🛡️ Protective Gear</h2>
+            <p>Fencers wear protective gear including:</p>
+            <p>• Mask - Protects the face</p>
+            <p>• Glove - Protects the sword hand</p>
+            <p>• Jacket - Protective outer layer</p>
+            <p>• Breeches - Knee-length pants</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>⚡ Percy's World © 2026</p>
+    </footer>
+</body>
+</html>
