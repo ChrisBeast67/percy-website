@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Printing - Percy's World</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; }
+        header { background: rgba(0,0,0,0.9); padding: 20px; position: fixed; width: 100%; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+        nav a { color: #aaa; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 25px; transition: all 0.3s; }
+        nav a:hover, nav a.active { background: #4d96ff; color: white; }
+        .container { max-width: 900px; margin: 100px auto 50px; padding: 20px; }
+        h1 { text-align: center; font-size: 48px; margin-bottom: 20px; color: #4d96ff; }
+        .content { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
+        .content h2 { color: #4d96ff; margin-bottom: 15px; font-size: 28px; }
+        .content p { font-size: 18px; line-height: 1.8; color: #ccc; margin-bottom: 15px; }
+        footer { background: rgba(0,0,0,0.8); padding: 30px; text-align: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">🏠 Home</a>
+            <a href="fencing.html">🤺 Fencing</a>
+            <a href="3dprinting.html" class="active">🖨️ 3D Print</a>
+            <a href="art.html">🎨 Art</a>
+            <a href="owner.html">👤 Owner</a>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>🖨️ 3D Printing</h1>
+        
+        <div class="content">
+            <h2>What is 3D Printing?</h2>
+            <p>3D printing, also known as additive manufacturing, is a process of making three-dimensional solid objects from a digital file.</p>
+            <p>The printer creates objects layer by layer, building up material until the object is complete.</p>
+        </div>
+        
+        <div class="content">
+            <h2>🔧 How It Works</h2>
+            <p>1. <strong>Design:</strong> Create a 3D model using CAD software</p>
+            <p>2. <strong>Slice:</strong> Convert the model into thin layers</p>
+            <p>3. <strong>Print:</strong> The printer builds the object layer by layer</p>
+            <p>4. <strong>Finish:</strong> Clean and polish the final product</p>
+        </div>
+        
+        <div class="content">
+            <h2>🧵 Types of 3D Printing</h2>
+            <p><strong>FDM (Fused Deposition Modeling):</strong> Uses plastic filament, most common for beginners</p>
+            <p><strong>SLA (Stereolithography):</strong> Uses resin and UV light, very detailed</p>
+            <p><strong>SLS (Selective Laser Sintering):</strong> Uses laser to fuse powder materials</p>
+        </div>
+        
+        <div class="content">
+            <h2>🎮 Cool Things You Can Print</h2>
+            <p>• Toys and action figures</p>
+            <p>• Replacement parts</p>
+            <p>• Art sculptures</p>
+            <p>• Phone cases</p>
+            <p>• Minecraft accessories</p>
+            <p>• Custom designs!</p>
+        </div>
+    </div>
+    
+    <footer>
+        <p>⚡ Percy's World © 2026</p>
+    </footer>
+</body>
+</html>
