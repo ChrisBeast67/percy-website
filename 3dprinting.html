@@ -3,92 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Printing - Percy's World</title>
+    <title>3D Printing</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; }
-        header { background: rgba(0,0,0,0.9); padding: 20px; position: fixed; width: 100%; top: 0; z-index: 100; }
-        nav { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        nav a { color: #aaa; text-decoration: none; font-size: 16px; padding: 10px 20px; border-radius: 25px; transition: all 0.3s; }
-        nav a:hover, nav a.active { background: #4d96ff; color: white; }
-        .container { max-width: 900px; margin: 100px auto 50px; padding: 20px; }
-        h1 { text-align: center; font-size: 48px; margin-bottom: 30px; color: #4d96ff; }
-        .upload-section { background: rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
-        .upload-section h2 { color: #6bcb77; margin-bottom: 15px; }
-        .upload-section p { color: #ccc; margin-bottom: 15px; }
-        input[type="file"] { margin: 10px 0; }
-        .btn { background: #4d96ff; color: white; border: none; padding: 15px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; }
-        .btn:hover { background: #3a7bd5; }
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .gallery img { width: 100%; border-radius: 15px; transition: transform 0.3s; }
-        .gallery img:hover { transform: scale(1.05); }
-        footer { background: rgba(0,0,0,0.8); padding: 30px; text-align: center; }
+        body { background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; font-family: Arial; }
+        .container { padding: 80px 20px 20px; max-width: 800px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 20px; color: #4d96ff; }
+        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 20px; margin-bottom: 20px; text-align: center; }
+        input { padding: 10px; border-radius: 8px; border: none; margin: 10px 0; }
+        button { background: #4d96ff; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .gallery img { width: 100%; border-radius: 10px; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); padding: 10px; display: flex; justify-content: center; gap: 15px; }
+        .nav a { color: #aaa; text-decoration: none; padding: 8px 15px; border-radius: 20px; }
+        .nav a:hover, .nav a.active { background: #4d96ff; color: white; }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="index.html">🏠 Home</a>
-            <a href="fencing.html">🤺 Fencing</a>
-            <a href="3dprinting.html" class="active">🖨️ 3D Print</a>
-            <a href="art.html">🎨 Art</a>
-            <a href="owner.html">👤 Owner</a>
-        </nav>
-    </header>
-    
+    <div class="nav">
+        <a href="index.html">Home</a>
+        <a href="fencing.html">Fencing</a>
+        <a href="3dprinting.html" class="active">3D Print</a>
+        <a href="art.html">Art</a>
+    </div>
     <div class="container">
         <h1>🖨️ 3D Printing</h1>
-        
-        <div class="upload-section">
-            <h2>📤 Upload Image</h2>
-            <p>Upload your 3D printing photos here!</p>
+        <div class="box">
             <input type="file" id="imageInput" accept="image/*">
             <br>
-            <button class="btn" onclick="uploadImage()">Upload</button>
-            <img id="preview" style="display:none; max-width:300px; margin-top:15px; border-radius:15px;">
+            <button onclick="uploadImage()">Upload</button>
         </div>
-        
-        <div class="upload-section">
-            <h2>🖼️ Gallery</h2>
-            <div class="gallery" id="gallery"></div>
-        </div>
+        <div class="gallery" id="gallery"></div>
     </div>
-    
-    <footer>
-        <p>⚡ Percy's World © 2026</p>
-    </footer>
-    
     <script>
-        const imageInput = document.getElementById('imageInput');
-        const preview = document.getElementById('preview');
-        
-        imageInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                document.getElementById('gallery').innerHTML += '<img src="' + URL.createObjectURL(e.target.files[0]) + '">';
             }
         });
-        
         function uploadImage() {
-            const file = imageInput.files[0];
-            if (!file) {
-                alert('Please select an image first!');
-                return;
-            }
-            
-            const gallery = document.getElementById('gallery');
-            const img = document.createElement('img');
-            img.src = URL.createObjectURL(file);
-            gallery.appendChild(img);
-            
-            alert('✅ Image added to gallery!');
-            imageInput.value = '';
-            preview.style.display = 'none';
+            alert('Image uploaded!');
         }
     </script>
 </body>
