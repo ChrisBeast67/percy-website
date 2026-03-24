@@ -7,15 +7,19 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: white; font-family: Arial; }
-        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; max-width: 350px; width: 100%; text-align: center; }
+        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; max-width: 400px; width: 100%; text-align: center; }
         h1 { color: #e94560; margin-bottom: 20px; }
         input { width: 100%; padding: 15px; border-radius: 10px; border: none; margin-bottom: 15px; font-size: 16px; }
-        button { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; }
+        button { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; margin: 5px; }
         .error { color: #ff6b6b; margin-top: 10px; }
         .panel { display: none; }
-        .page-links { display: flex; flex-direction: column; gap: 15px; }
-        .page-link { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; }
-        .page-link a { color: #4d96ff; font-size: 18px; text-decoration: none; }
+        .upload-section { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin: 15px 0; text-align: left; }
+        .upload-section h3 { color: #6bcb77; margin-bottom: 10px; }
+        .upload-section p { color: #ccc; font-size: 14px; margin-bottom: 10px; }
+        .file-input { margin: 10px 0; }
+        .preview { max-width: 150px; border-radius: 10px; margin-top: 10px; }
+        .instructions { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin: 15px 0; text-align: left; }
+        .instructions p { color: #aaa; font-size: 13px; margin-bottom: 8px; }
     </style>
 </head>
 <body>
@@ -28,13 +32,36 @@
     
     <div class="box panel" id="ownerPanel">
         <h1>👤 Upload Images</h1>
-        <p style="color:#ccc;margin-bottom:20px;">Click a page to upload images:</p>
-        <div class="page-links">
-            <div class="page-link"><a href="fencing.html" target="_blank">🤺 Fencing</a></div>
-            <div class="page-link"><a href="3dprinting.html" target="_blank">🖨️ 3D Printing</a></div>
-            <div class="page-link"><a href="art.html" target="_blank">🎨 Art</a></div>
+        
+        <div class="instructions">
+            <p><strong>How to add images:</strong></p>
+            <p>1. Select a page below</p>
+            <p>2. Upload your image</p>
+            <p>3. <strong>Send me the image on Discord</strong> and I'll add it to the website!</p>
         </div>
-        <br><br>
+        
+        <div class="upload-section">
+            <h3>🤺 Fencing</h3>
+            <input type="file" id="fencingFile" accept="image/*" onchange="preview(this, 'fencingPreview')">
+            <img id="fencingPreview" class="preview" style="display:none;">
+            <button onclick="sendToMe('fencing')">📤 Send to Percy</button>
+        </div>
+        
+        <div class="upload-section">
+            <h3>🖨️ 3D Printing</h3>
+            <input type="file" id="3dFile" accept="image/*" onchange="preview(this, '3dPreview')">
+            <img id="3dPreview" class="preview" style="display:none;">
+            <button onclick="sendToMe('3d')">📤 Send to Percy</button>
+        </div>
+        
+        <div class="upload-section">
+            <h3>🎨 Art</h3>
+            <input type="file" id="artFile" accept="image/*" onchange="preview(this, 'artPreview')">
+            <img id="artPreview" class="preview" style="display:none;">
+            <button onclick="sendToMe('art')">📤 Send to Percy</button>
+        </div>
+        
+        <br>
         <a href="index.html" style="color:#888;">← Back</a>
     </div>
     
@@ -48,6 +75,29 @@
             } else {
                 document.getElementById('error').textContent = '❌ Wrong password!';
             }
+        }
+        
+        function preview(input, previewId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(previewId).src = e.target.result;
+                    document.getElementById(previewId).style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function sendToMe(page) {
+            let pageName = {'fencing': 'Fencing', '3d': '3D Printing', 'art': 'Art'}[page];
+            let fileInput = document.getElementById(page + 'File');
+            
+            if (!fileInput.files || !fileInput.files[0]) {
+                alert('Please select an image first!');
+                return;
+            }
+            
+            alert('📤 Image selected for ' + pageName + '!\n\nPlease send this image to me (Percy) on Discord and I will add it to the website!');
         }
     </script>
 </body>
