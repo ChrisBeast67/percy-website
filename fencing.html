@@ -6,14 +6,12 @@
     <title>Fencing</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; font-family: Arial; padding: 20px; }
-        .container { max-width: 600px; margin: 60px auto 20px; }
-        h1 { text-align: center; color: #e94560; margin-bottom: 20px; }
-        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 25px; margin-bottom: 20px; text-align: center; }
+        body { background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; color: white; font-family: Arial; }
+        .container { padding: 80px 20px 20px; max-width: 600px; margin: 0 auto; text-align: center; }
+        h1 { color: #e94560; margin-bottom: 20px; }
+        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; margin-bottom: 20px; }
         .box h2 { color: #6bcb77; margin-bottom: 15px; }
-        input { padding: 12px; border-radius: 8px; border: none; margin: 10px 0; width: 100%; }
-        button { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; }
-        .preview { max-width: 200px; border-radius: 10px; margin-top: 15px; display: none; }
+        .box p { color: #ccc; line-height: 1.6; }
         .nav { position: fixed; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.8); padding: 10px; display: flex; justify-content: center; gap: 15px; }
         .nav a { color: #aaa; text-decoration: none; padding: 8px 15px; border-radius: 20px; }
         .nav a:hover, .nav a.active { background: #e94560; color: white; }
@@ -29,28 +27,9 @@
     <div class="container">
         <h1>🤺 Fencing</h1>
         <div class="box">
-            <h2>📤 Send Image to Percy</h2>
-            <p style="color:#ccc;margin-bottom:15px;">Select an image and send it to Percy on Discord!</p>
-            <input type="file" id="imageInput" accept="image/*">
-            <img id="preview" class="preview">
-            <br><br>
-            <button onclick="sendImage()">📤 Send to Percy</button>
+            <h2>Coming Soon!</h2>
+            <p>Send your fencing photos to Percy on Discord to add them here!</p>
         </div>
     </div>
-    <script>
-        document.getElementById('imageInput').addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                document.getElementById('preview').src = URL.createObjectURL(e.target.files[0]);
-                document.getElementById('preview').style.display = 'block';
-            }
-        });
-        function sendImage() {
-            if (!document.getElementById('imageInput').files[0]) {
-                alert('Please select an image first!');
-                return;
-            }
-            alert('📸 Please send this image to Percy on Discord and I will add it to the website!');
-        }
-    </script>
 </body>
 </html>
