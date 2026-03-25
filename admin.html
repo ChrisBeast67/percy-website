@@ -7,14 +7,15 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: linear-gradient(135deg, #1a1a2e, #16213e); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; color: white; font-family: Arial; }
-        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; max-width: 350px; width: 100%; text-align: center; }
+        .box { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 30px; max-width: 400px; width: 100%; text-align: center; }
         h1 { color: #e94560; margin-bottom: 20px; }
         input { width: 100%; padding: 15px; border-radius: 10px; border: none; margin-bottom: 15px; font-size: 16px; }
         button { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 10px; cursor: pointer; font-size: 16px; margin: 5px; }
         .error { color: #ff6b6b; margin-top: 10px; }
         .panel { display: none; }
-        .links { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-        .link { background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; }
+        .section { margin: 20px 0; text-align: left; }
+        .section h2 { color: #6bcb77; margin-bottom: 10px; font-size: 18px; }
+        .link { background: rgba(255,255,255,0.1); padding: 12px; border-radius: 8px; margin: 5px 0; }
         .link a { color: #4d96ff; text-decoration: none; }
     </style>
 </head>
@@ -28,12 +29,32 @@
     
     <div class="box panel" id="adminPanel">
         <h1>⚡ Admin Panel</h1>
-        <div class="link"><a href="https://chrisbeast67.github.io/percy-website" target="_blank">🎮 Percy's World</a></div>
+        
+        <div class="section">
+            <h2>🎮 Games</h2>
+            <div class="link"><a href="games.html" target="_blank">All Games</a></div>
+            <div class="link"><a href="games/tetris.html" target="_blank">🧱 Tetris</a></div>
+            <div class="link"><a href="games/snake.html" target="_blank">🐍 Snake</a></div>
+            <div class="link"><a href="games/pong.html" target="_blank">🏓 Pong</a></div>
+            <div class="link"><a href="games/breakout.html" target="_blank">🧱 Breakout</a></div>
+            <div class="link"><a href="games/racing.html" target="_blank">🏎️ Racing</a></div>
+            <div class="link"><a href="games/catch-stars.html" target="_blank">⭐ Catch Stars</a></div>
+        </div>
+        
+        <div class="section">
+            <h2>🌐 Websites</h2>
+            <div class="link"><a href="https://chrisbeast67.github.io/percy-website" target="_blank">🎮 Percy's World</a></div>
+            <div class="link"><a href="https://chrisbeast67.github.io/save-earth" target="_blank">🌍 Save Earth</a></div>
+        </div>
+        
+        <div class="section">
+            <h2>📄 Pages</h2>
+            <div class="link"><a href="fencing.html" target="_blank">🤺 Fencing</a></div>
+            <div class="link"><a href="3dprinting.html" target="_blank">🖨️ 3D Print</a></div>
+            <div class="link"><a href="art.html" target="_blank">🎨 Art</a></div>
+        </div>
+        
         <br>
-        <div class="link"><a href="https://chrisbeast67.github.io/save-earth" target="_blank">🌍 Save Earth</a></div>
-        <br><br>
-        <div class="link"></div>
-        <br><br>
         <a href="index.html" style="color:#888;">← Back</a>
     </div>
     
