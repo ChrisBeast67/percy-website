@@ -109,6 +109,8 @@
         const correctPassword = "232917";
         const githubRepo = "ChrisBeast67/percy-website";
         const openaiKey = "";
+        const PUSH_SERVER_URL = "https://percy-push-server.onrender.com"; // Free hosting - Render
+        const API_KEY = "percy-website-secret-key"; // Key for the push server
         let githubToken = localStorage.getItem('gh_token');
         
         let generatedGameCode = "";
@@ -262,46 +264,27 @@ Rules:
             status.textContent = '📤 Saving to GitHub...';
             
             try {
-                // Get current branch
-                const branchResponse = await fetch(`https://api.github.com/repos/${githubRepo}`, {
-                    headers: { 'Authorization': 'token ' + githubToken }
-                });
-                const repoData = await branchResponse.json();
-                const defaultBranch = repoData.default_branch;
-                
-                // Check if file exists to get SHA
-                let sha = null;
-                const fileResponse = await fetch(`https://api.github.com/repos/${githubRepo}/contents/games/${filename}`, {
-                    headers: { 'Authorization': 'token ' + githubToken }
-                });
-                
-                if (fileResponse.ok) {
-                    const fileData = await fileResponse.json();
-                    sha = fileData.sha;
-                }
-                
-                // Create or update file
-                const createResponse = await fetch(`https://api.github.com/repos/${githubRepo}/contents/games/${filename}`, {
-                    method: 'PUT',
+                // Use the push server instead of direct GitHub API
+                const response = await fetch(`${PUSH_SERVER_URL}/push-game`, {
+                    method: 'POST',
                     headers: {
-                        'Authorization': 'token ' + githubToken,
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'x-api-key': API_KEY
                     },
                     body: JSON.stringify({
-                        message: `Add new game: ${filename} (via AI Generator)`,
-                        content: btoa(unescape(encodeURIComponent(generatedGameCode))),
-                        branch: defaultBranch,
-                        sha: sha
+                        filename: filename,
+                        code: generatedGameCode
                     })
                 });
                 
-                if (!createResponse.ok) {
-                    const errorData = await createResponse.json();
-                    throw new Error(errorData.message || 'Failed to save file');
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Failed to save game');
                 }
                 
                 status.className = 'status success';
-                status.innerHTML = `✅ Game saved! <a href="https://ChrisBeast67.github.io/percy-website/games/${filename}" target="_blank" style="color:white;">Play it now!</a>`;
+                status.innerHTML = `✅ Game saved! <a href="${result.url}" target="_blank" style="color:white;">Play it now!</a>`;
                 
                 // Reset form
                 document.getElementById('previewContainer').style.display = 'none';
@@ -311,7 +294,7 @@ Rules:
                 
             } catch (error) {
                 status.className = 'status error';
-                status.textContent = '❌ Error saving to GitHub: ' + error.message;
+                status.textContent = '❌ Error: ' + error.message;
             }
         }
     </script>
