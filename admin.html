@@ -46,13 +46,6 @@
             <h2>🎮 Game Management</h2>
             
             <div class="option-box">
-                <h3>Option 1: Create New Game</h3>
-                <input type="text" id="gameName" placeholder="Game Name (e.g., Chess)">
-                <textarea id="gameDesc" placeholder="Game Description"></textarea>
-                <button class="btn-green" onclick="createGame()">➕ Create Game</button>
-            </div>
-            
-            <div class="option-box">
                 <h3>Option 2: AI Game Generator</h3>
                 <input type="text" id="aiPrompt" placeholder="Describe the game you want (e.g., A puzzle game with falling blocks)">
                 <button class="btn-blue" onclick="generateWithAI()">🤖 Generate with AI</button>
@@ -80,21 +73,6 @@
             } else {
                 document.getElementById('error').textContent = '❌ Wrong password!';
             }
-        }
-        
-        function createGame() {
-            const name = document.getElementById('gameName').value;
-            const desc = document.getElementById('gameDesc').value;
-            
-            if (!name) {
-                alert('Please enter a game name!');
-                return;
-            }
-            
-            alert('🎮 Game "' + name + '" created!\n\nNote: This is a demo. Send the game details to Percy on Discord to add it to the website!');
-            
-            document.getElementById('gameName').value = '';
-            document.getElementById('gameDesc').value = '';
         }
         
         function generateWithAI() {
