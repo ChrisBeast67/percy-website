@@ -111,7 +111,6 @@
         const openaiKey = "";
         const PUSH_SERVER_URL = "https://push-server-im8n.onrender.com"; // Percy's Push Server
         const API_KEY = "percy-website-secret-key"; // Key for the push server
-        let githubToken = localStorage.getItem('gh_token');
         
         let generatedGameCode = "";
         let generatedGamePrompt = "";
@@ -144,12 +143,6 @@
                 return;
             }
             
-            if (!openaiKey) {
-                status.className = 'status error';
-                status.innerHTML = '❌ OpenAI API key not set. Ask Percy to add it!';
-                return;
-            }
-            
             status.className = 'status loading';
             status.textContent = '🤖 AI is generating your game...';
             
@@ -158,56 +151,27 @@
         }
         
         async function generateGameCode(name, prompt, status) {
-            const systemPrompt = `You are a game generator. Create a complete, playable HTML5 game based on the user's description. 
-
-Rules:
-- Return ONLY the HTML file content - no explanations, no markdown, no code blocks
-- The game must be fully functional and playable
-- Use vanilla JavaScript and CSS (no external dependencies except fonts)
-- Include a game title in the HTML
-- Make it fun and polished
-- Use this format for the HTML:
-<!DOCTYPE html>
-<html>
-<head>
-<title>GAME TITLE</title>
-<style>/* CSS here */</style>
-</head>
-<body>
-<!-- Game HTML -->
-<scr\` + \`ipt>/* JS here */</scr\` + \`ipt>
-</body>
-</html>`;
-            
             try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                // Use the push server to generate the game
+                const response = await fetch(`${PUSH_SERVER_URL}/generate-game`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + openaiKey
+                        'x-api-key': API_KEY
                     },
                     body: JSON.stringify({
-                        model: 'gpt-4o-mini',
-                        messages: [
-                            { role: 'system', content: systemPrompt },
-                            { role: 'user', content: `Create a game called "${name}": ${prompt}` }
-                        ],
-                        max_tokens: 4000
+                        name: name,
+                        prompt: prompt
                     })
                 });
                 
                 const data = await response.json();
                 
-                if (data.error) {
-                    throw new Error(data.error.message);
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate game');
                 }
                 
-                let gameCode = data.choices[0].message.content;
-                
-                // Clean up any markdown formatting
-                gameCode = gameCode.replace(/^```html\n?/, '').replace(/\n?```$/, '').trim();
-                
-                generatedGameCode = gameCode;
+                generatedGameCode = data.code;
                 generatedGamePrompt = prompt;
                 
                 // Show preview
