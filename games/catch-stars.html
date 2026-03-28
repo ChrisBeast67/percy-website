@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Catch Stars - Percy's World</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 10px; font-family: 'Courier New', monospace; }
+        .console { background: #FFD700; border-radius: 25px; padding: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 -5px 20px rgba(0,0,0,0.2); max-width: 280px; }
+        .title { text-align: center; color: #333; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
+        .screen-border { background: #222; border-radius: 10px; padding: 6px; margin-bottom: 10px; }
+        .screen { background: #8BAC0F; border-radius: 6px; padding: 4px; }
+        .info-bar { display: flex; justify-content: space-between; font-size: 10px; color: #0F380F; margin-bottom: 4px; }
+        canvas { display: block; border: 2px solid #333; }
+        .controls { display: flex; justify-content: space-between; align-items: center; }
+        .dpad-btn { width: 32px; height: 32px; border-radius: 50%; background: #4169E1; border: none; color: white; font-size: 14px; box-shadow: 0 3px 0 #1E3A8A; }
+        .dpad-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #1E3A8A; }
+        .func-btn { width: 28px; height: 20px; border-radius: 5px; border: none; font-size: 10px; font-weight: bold; box-shadow: 0 2px 0 rgba(0,0,0,0.3); }
+        .func-btn.green { background: #00FF00; color: #006400; }
+        .func-btn.red { background: #FF0000; color: #8B0000; }
+        a { color: #FFD700; margin-top: 10px; display: block; text-align: center; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="console">
+        <div class="title">CATCH STARS</div>
+        <div class="screen-border">
+            <div class="info-bar"><span>SCORE: <b id="sc">0</b></span><span>LIVES: <b id="lv">3</b></span></div>
+            <div class="screen"><canvas id="g" width="180" height="160"></canvas></div>
+        </div>
+        <div class="controls">
+            <div style="display:flex;gap:3px;">
+                <button class="dpad-btn" id="lBtn">⬅</button>
+                <button class="dpad-btn" id="rBtn">➡</button>
+            </div>
+            <button class="func-btn green" id="sBtn">▶</button>
+        </div>
+    </div>
+    <a href="games.html">← Back</a>
+    <script>
+        const cv=document.getElementById('g'), cx=cv.getContext('2d');
+        let pX=80, stars=[], score=0, lives=3, gl, running=false;
+        
+        function dr(){
+            cx.fillStyle='#8BAC0F';cx.fillRect(0,0,180,160);
+            cx.fillStyle='#0F380F';cx.fillRect(pX,145,30,15);
+            stars.forEach(s=>{cx.fillStyle=s.c;cx.beginPath();cx.arc(s.x+8,s.y+8,8,0,7);cx.fill();});
+            document.getElementById('sc').innerText=score;document.getElementById('lv').innerText=lives;
+        }
+        
+        function up(){
+            if(Math.random()<0.03){stars.push({x:Math.random()*150,y:-10,s:2+Math.random()*2,c:['#CC0000','#00CC00','#3333FF','#FFFF00'][Math.floor(Math.random()*4)]});}
+            stars.forEach((s,i)=>{s.y+=s.s;
+                if(s.y>170){stars.splice(i,1);lives--;document.getElementById('lv').innerText=lives;
+                    if(lives<=0){alert('GAME OVER!\nScore: '+score);reset();}}
+                if(pX<s.x+16&&pX+30>s.x&&145<s.y+16&&s.y<160){stars.splice(i,1);score+=10;}
+            });
+            dr();
+        }
+        
+        function reset(){running=false;clearInterval(gl);score=0;lives=3;stars=[];pX=80;document.getElementById('sBtn').innerText='▶';dr();}
+        
+        function st(){if(running)return;running=true;document.getElementById('sBtn').innerText='⏸';gl=setInterval(up,50);}
+        
+        document.getElementById('lBtn').onclick=()=>{if(pX>0)pX-=15;dr();};
+        document.getElementById('rBtn').onclick=()=>{if(pX<150)pX+=15;dr();};
+        document.getElementById('sBtn').onclick=st;
+        document.onkeydown=e=>{if(e.keyCode==37&&pX>0)pX-=15;if(e.keyCode==39&&pX<150)pX+=15;dr();};
+        dr();
+    </script>
+</body>
+</html>
