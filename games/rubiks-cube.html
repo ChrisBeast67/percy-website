@@ -4,57 +4,34 @@
 <title>Rubik's Cube</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: Arial; color: white; }
-h1 { margin-bottom: 20px; color: #e94560; }
-.cube-container { perspective: 600px; margin: 20px; }
-.cube { width: 180px; height: 180px; position: relative; transform-style: preserve-3d; transform: rotateX(-20deg) rotateY(-30deg); transition: transform 0.5s; }
-.face { position: absolute; width: 180px; height: 180px; display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 2px; border: 2px solid #333; }
-.face.front { transform: translateZ(90px); }
-.face.back { transform: rotateY(180deg) translateZ(90px); }
-.face.right { transform: rotateY(90deg) translateZ(90px); }
-.face.left { transform: rotateY(-90deg) translateZ(90px); }
-.face.top { transform: rotateX(90deg) translateZ(90px); }
-.face.bottom { transform: rotateX(-90deg) translateZ(90px); }
-.cell { width: 60px; height: 60px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; }
-.white { background: linear-gradient(135deg, #fff, #ddd); color: #333; }
-.yellow { background: linear-gradient(135deg, #ffd700, #ffaa00); }
-.red { background: linear-gradient(135deg, #ff4444, #cc0000); }
+body { background: #1a1a2e; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: Arial; color: white; overflow: hidden; }
+h1 { margin-bottom: 10px; color: #e94560; font-size: 28px; }
+.cube-container { perspective: 800px; width: 200px; height: 200px; }
+.cube { width: 180px; height: 180px; position: relative; transform-style: preserve-3d; margin: 40px auto; }
+.face { position: absolute; width: 180px; height: 180px; display: grid; grid-template-columns: repeat(3, 60px); grid-template-rows: repeat(3, 60px); gap: 3px; border: 3px solid #222; border-radius: 8px; }
+.face > div { width: 54px; height: 54px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+.face > div:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.5); }
+.white { background: linear-gradient(135deg, #ffffff, #cccccc); }
+.yellow { background: linear-gradient(135deg, #ffff00, #ffaa00); }
+.red { background: linear-gradient(135deg, #ff0000, #cc0000); }
 .orange { background: linear-gradient(135deg, #ff8800, #ff5500); }
-.blue { background: linear-gradient(135deg, #4488ff, #0055cc); }
-.green { background: linear-gradient(135deg, #44ff44, #00aa00); }
-.controls { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 400px; margin-top: 20px; }
-button { padding: 12px 20px; font-size: 14px; border: none; border-radius: 8px; cursor: pointer; background: #4d96ff; color: white; transition: transform 0.2s; }
-button:hover { transform: scale(1.05); }
-button:active { transform: scale(0.95); }
-.reset { background: #e94560; }
-.shuffle { background: #6bcb77; }
-.info { margin-top: 15px; text-align: center; color: #888; font-size: 14px; }
+.blue { background: linear-gradient(135deg, #0066ff, #0044cc); }
+.green { background: linear-gradient(135deg, #00cc00, #008800); }
+.black { background: #111; }
+.instructions { position: fixed; bottom: 20px; text-align: center; color: #888; font-size: 14px; line-height: 1.6; }
 </style>
 </head>
 <body>
 <h1>🧊 Rubik's Cube</h1>
-<div class="cube-container">
-<div class="cube" id="cube">
-<div class="face front" id="face-front"></div>
-<div class="face back" id="face-back"></div>
-<div class="face right" id="face-right"></div>
-<div class="face left" id="face-left"></div>
-<div class="face top" id="face-top"></div>
-<div class="face bottom" id="face-bottom"></div>
+<div class="cube-container"><div class="cube" id="cube"></div></div>
+<div class="instructions">
+Drag anywhere to rotate the cube<br>
+Click a face section to rotate that layer
 </div>
-</div>
-<div class="controls">
-<button onclick="move('U')">U</button>
-<button onclick="move('D')">D</button>
-<button onclick="move('L')">L</button>
-<button onclick="move('R')">R</button>
-<button onclick="move('F')">F</button>
-<button onclick="move('B')">B</button>
-<button class="shuffle" onclick="shuffle()">Shuffle</button>
-<button class="reset" onclick="resetCube()">Reset</button>
-</div>
-<div class="info">Click buttons to rotate faces<br>U=Up, D=Down, L=Left, R=Right, F=Front, B=Back</div>
 <script>
+let rotX = -25, rotY = -35;
+let isDragging = false, lastX, lastY;
+let cube = document.getElementById('cube');
 let faces = {
 front: ['white','white','white','white','white','white','white','white','white'],
 back: ['yellow','yellow','yellow','yellow','yellow','yellow','yellow','yellow','yellow'],
@@ -63,69 +40,70 @@ left: ['orange','orange','orange','orange','orange','orange','orange','orange','
 top: ['blue','blue','blue','blue','blue','blue','blue','blue','blue'],
 bottom: ['green','green','green','green','green','green','green','green','green']
 };
-
+let faceData = [
+{ id: 'front', transform: 'rotateY(0deg) translateZ(90px)', colors: ['white','white','white','white','white','white','white','white','white'] },
+{ id: 'back', transform: 'rotateY(180deg) translateZ(90px)', colors: ['yellow','yellow','yellow','yellow','yellow','yellow','yellow','yellow','yellow'] },
+{ id: 'right', transform: 'rotateY(90deg) translateZ(90px)', colors: ['red','red','red','red','red','red','red','red','red'] },
+{ id: 'left', transform: 'rotateY(-90deg) translateZ(90px)', colors: ['orange','orange','orange','orange','orange','orange','orange','orange','orange'] },
+{ id: 'top', transform: 'rotateX(90deg) translateZ(90px)', colors: ['blue','blue','blue','blue','blue','blue','blue','blue','blue'] },
+{ id: 'bottom', transform: 'rotateX(-90deg) translateZ(90px)', colors: ['green','green','green','green','green','green','green','green','green'] }
+];
 function render() {
-for (let face in faces) {
-let el = document.getElementById('face-' + face);
-el.innerHTML = '';
-faces[face].forEach(color => {
+cube.innerHTML = '';
+faceData.forEach((f, fi) => {
+let el = document.createElement('div');
+el.className = 'face';
+el.style.transform = f.transform;
+for (let i = 0; i < 9; i++) {
 let cell = document.createElement('div');
-cell.className = 'cell ' + color;
+cell.className = f.colors[i];
+cell.dataset.face = f.id;
+cell.dataset.index = i;
+cell.onclick = () => rotateFace(f.id, i);
 el.appendChild(cell);
+}
+cube.appendChild(el);
 });
+cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
 }
-}
-function rotateFace(face) {
-let f = faces[face];
-let temp = [f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8]];
-f[0] = temp[6]; f[1] = temp[3]; f[2] = temp[0];
-f[3] = temp[7]; f[4] = temp[4]; f[5] = temp[1];
-f[6] = temp[8]; f[7] = temp[5]; f[8] = temp[2];
-}
-function move(dir) {
-let cube = document.getElementById('cube');
-let angle = 15;
-switch(dir) {
-case 'U': rotateFace('top'); rotateFace('top');
-cube.style.transform = 'rotateX(-90deg)';
-setTimeout(() => { cube.style.transform = 'rotateX(-20deg) rotateY(-30deg)'; }, 250);
-break;
-case 'D': cube.style.transform = 'rotateX(90deg)';
-setTimeout(() => { cube.style.transform = 'rotateX(-20deg) rotateY(-30deg)'; }, 250);
-break;
-case 'L': cube.style.transform = 'rotateY(-90deg)';
-setTimeout(() => { cube.style.transform = 'rotateX(-20deg) rotateY(-30deg)'; }, 250);
-break;
-case 'R': cube.style.transform = 'rotateY(90deg)';
-setTimeout(() => { cube.style.transform = 'rotateX(-20deg) rotateY(-30deg)'; }, 250);
-break;
-case 'F': cube.style.transform = 'translateZ(90px) rotateY(180deg)';
-setTimeout(() => { cube.style.transform = 'rotateX(-20deg) rotateY(-30deg)'; }, 250);
-break;
-case 'B': cube.style.transform = 'translateZ(-90px)';
-setTimeout(() => { cube.style.transform = 'rotateX(-20deg) rotateY(-30deg)'; }, 250);
-break;
-}
+function rotateFace(faceId, index) {
+let row = Math.floor(index / 3);
+let col = index % 3;
+let face = faceData.find(f => f.id === faceId);
+if (!face) return;
+let newColors = [...face.colors];
+let temp;
+// Simple rotation clockwise
+temp = newColors[0]; newColors[0] = newColors[6]; newColors[6] = newColors[8]; newColors[8] = newColors[2]; newColors[2] = temp;
+temp = newColors[1]; newColors[1] = newColors[3]; newColors[3] = newColors[7]; newColors[7] = temp;
+face.colors = newColors;
+faces[faceId] = newColors;
 render();
 }
-function shuffle() {
-let moves = ['U','D','L','R','F','B'];
-for (let i = 0; i < 20; i++) {
-let m = moves[Math.floor(Math.random() * moves.length)];
-move(m);
-}
-}
-function resetCube() {
-faces = {
-front: Array(9).fill('white'),
-back: Array(9).fill('yellow'),
-right: Array(9).fill('red'),
-left: Array(9).fill('orange'),
-top: Array(9).fill('blue'),
-bottom: Array(9).fill('green')
+document.onmousedown = (e) => { isDragging = true; lastX = e.clientX; lastY = e.clientY; };
+document.onmouseup = () => { isDragging = false; };
+document.onmousemove = (e) => {
+if (!isDragging) return;
+let dx = e.clientX - lastX;
+let dy = e.clientY - lastY;
+rotY += dx * 0.5;
+rotX -= dy * 0.5;
+lastX = e.clientX;
+lastY = e.clientY;
+cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
 };
-render();
-}
+document.ontouchstart = (e) => { isDragging = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; };
+document.ontouchend = () => { isDragging = false; };
+document.ontouchmove = (e) => {
+if (!isDragging) return;
+let dx = e.touches[0].clientX - lastX;
+let dy = e.touches[0].clientY - lastY;
+rotY += dx * 0.5;
+rotX -= dy * 0.5;
+lastX = e.touches[0].clientX;
+lastY = e.touches[0].clientY;
+cube.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+};
 render();
 </script>
 </body>
