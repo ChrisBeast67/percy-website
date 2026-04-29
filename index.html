@@ -85,6 +85,11 @@
             margin-bottom: 40px;
         }
         
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+        
         .cta-button {
             background: #e94560;
             color: white;
@@ -100,6 +105,14 @@
         .cta-button:hover {
             transform: scale(1.1);
             box-shadow: 0 0 30px #e94560;
+        }
+        
+        .discord-btn {
+            background: #5865F2;
+        }
+        
+        .discord-btn:hover {
+            box-shadow: 0 0 30px #5865F2;
         }
         
         /* Features */
@@ -150,14 +163,22 @@
         <ul>
             <li><a href="index.html">Home</a></li>
             <li><a href="games.html">Games</a></li>
+            <li><a href="fencing.html">🤺 Fencing</a></li>
+            <li><a href="3dprinting.html">🖨️ 3D Print</a></li>
+            <li><a href="art.html">🎨 Art</a></li>
             <li><a href="about.html">About</a></li>
+            <li><a href="admin.html" style="color:#e94560;">⚙️ Admin</a></li>
         </ul>
     </nav>
     
     <section class="hero">
         <h1>🐱 Welcome to Percy's World! ⚡</h1>
         <p>Fun games, cool stuff, and more!</p>
-        <a href="games.html" class="cta-button">🎮 Play Now!</a>
+        <div class="buttons">
+            <a href="games.html" class="cta-button">🎮 Play Now!</a>
+            <a href="https://discord.gg/MZg8BwF2N" class="cta-button discord-btn" target="_blank">🚀 Join Discord</a>
+        </div>
+        <p style="margin-top: 15px; color: #aaa; font-size: 14px;">Official Percy's World Discord Server</p>
     </section>
     
     <section class="features">
