@@ -57,6 +57,51 @@
             color: #e94560;
         }
         
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-btn {
+            cursor: pointer;
+            color: white;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .dropdown-btn:hover {
+            color: #e94560;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            min-width: 180px;
+            border-radius: 10px;
+            top: 100%;
+            left: 0;
+            padding: 10px 0;
+            z-index: 200;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            font-size: 16px;
+            white-space: nowrap;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(233,69,96,0.3);
+        }
+        
         /* Hero Section */
         .hero {
             height: 100vh;
@@ -162,7 +207,16 @@
         <div class="logo">⚡ Percy<span>'s World</span></div>
         <ul>
             <li><a href="index.html">Home</a></li>
-            <li><a href="games.html">Games</a></li>
+            <li class="dropdown">
+                <span class="dropdown-btn">🎮 Games ▾</span>
+                <div class="dropdown-content">
+                    <a href="https://slopeonline.online/" target="_blank">⛰️ Slope Game</a>
+                    <a href="https://poorbunny2.io/" target="_blank">🐰 Poor Bunny</a>
+                    <a href="https://monkeymartgame.io/" target="_blank">🍌 Monkey Mart</a>
+                    <a href="https://www.cokitos.com/wave-dash/" target="_blank">🌊 Wave Dash</a>
+                </div>
+            </li>
+            <li><a href="games.html">Local Games</a></li>
             <li><a href="fencing.html">🤺 Fencing</a></li>
             <li><a href="3dprinting.html">🖨️ 3D Print</a></li>
             <li><a href="art.html">🎨 Art</a></li>
