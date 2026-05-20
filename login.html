@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Percy's World 🐱⚡</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 50px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(233,69,96,0.3);
+        }
+        
+        .logo {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: #e94560;
+        }
+        
+        p.subtitle {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            outline: none;
+            transition: background 0.3s;
+        }
+        
+        input:focus {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        input::placeholder {
+            color: #aaa;
+        }
+        
+        .btn {
+            background: #e94560;
+            color: white;
+            padding: 15px 40px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #e94560;
+        }
+        
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .links {
+            margin-top: 20px;
+        }
+        
+        .links a {
+            color: #e94560;
+            text-decoration: none;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .message.success {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+            display: block;
+        }
+        
+        .message.error {
+            background: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+            display: block;
+        }
+        
+        .message.info {
+            background: rgba(33, 150, 243, 0.3);
+            color: #2196f3;
+            display: block;
+        }
+        
+        .user-info {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.2);
+            border-radius: 10px;
+        }
+        
+        .verified-badge {
+            color: #4caf50;
+            font-size: 14px;
+        }
+        
+        .unverified-badge {
+            color: #ff9800;
+            font-size: 14px;
+        }
+
+        .spinner {
+            display: none;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">⚡🐱</div>
+        <h1 id="title">Welcome Back!</h1>
+        <p class="subtitle" id="subtitle">Login to access Percy's World</p>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="authForm">
+            <div class="form-group">
+                <input type="email" id="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group" id="passwordGroup">
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            <div class="form-group" id="confirmPasswordGroup" style="display: none;">
+                <input type="password" id="confirmPassword" placeholder="Confirm Password">
+            </div>
+            <button type="submit" class="btn" id="submitBtn">Login</button>
+        </form>
+        
+        <div class="spinner" id="spinner"></div>
+        
+        <div class="links" id="links">
+            <a href="#" id="toggleLink">Don't have an account? Sign up!</a>
+            <br><br>
+            <a href="index.html">← Back to Home</a>
+        </div>
+        
+        <div class="user-info" id="userInfo">
+            <p>Logged in as: <strong id="userEmail"></strong></p>
+            <p id="verificationStatus"></p>
+            <button class="btn" onclick="logout()" style="margin-top: 15px;">Logout</button>
+            <p style="margin-top: 15px; font-size: 12px;">
+                <a href="#" onclick="sendVerification()" id="resendLink">Resend verification email</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    
+    <script>
+        // ============================================
+        // 🔥 FIREBASE CONFIGURATION
+        // ============================================
+        // IMPORTANT: Replace these values with your own Firebase project config!
+        // Get your config from: https://console.firebase.google.com/
+        // 1. Go to Firebase Console
+        // 2. Create a project (or use existing)
+        // 3. Enable Authentication > Email/Password
+        // 4. Register your app and copy the config
+        
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY_HERE",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // ============================================
+        // 📝 AUTH STATE MANAGEMENT
+        // ============================================
+        
+        // Check auth state
+        auth.onAuthStateChanged(function(user) {
+            const userInfo = document.getElementById('userInfo');
+            const authForm = document.getElementById('authForm');
+            const links = document.getElementById('links');
+            
+            if (user) {
+                // User is logged in
+                userInfo.style.display = 'block';
+                authForm.style.display = 'none';
+                links.style.display = 'none';
+                
+                document.getElementById('userEmail').textContent = user.email;
+                
+                if (user.emailVerified) {
+                    document.getElementById('verificationStatus').innerHTML = 
+                        '<span class="verified-badge">✓ Email Verified</span>';
+                    document.getElementById('resendLink').style.display = 'none';
+                } else {
+                    document.getElementById('verificationStatus').innerHTML = 
+                        '<span class="unverified-badge">⚠ Email Not Verified</span>';
+                    document.getElementById('resendLink').style.display = 'inline';
+                    showMessage('Please verify your email! Check your inbox (and spam folder).', 'info');
+                }
+            } else {
+                // User is logged out
+                userInfo.style.display = 'none';
+                authForm.style.display = 'block';
+                links.style.display = 'block';
+            }
+        });
+        
+        // ============================================
+        // 🎮 AUTH FUNCTIONS
+        // ============================================
+        
+        let isSignup = false;
+        
+        function toggleMode() {
+            isSignup = !isSignup;
+            const title = document.getElementById('title');
+            const subtitle = document.getElementById('subtitle');
+            const submitBtn = document.getElementById('submitBtn');
+            const toggleLink = document.getElementById('toggleLink');
+            const confirmGroup = document.getElementById('confirmPasswordGroup');
+            
+            if (isSignup) {
+                title.textContent = 'Create Account';
+                subtitle.textContent = 'Join Percy\'s World!';
+                submitBtn.textContent = 'Sign Up';
+                toggleLink.textContent = 'Already have an account? Login!';
+                confirmGroup.style.display = 'block';
+            } else {
+                title.textContent = 'Welcome Back!';
+                subtitle.textContent = 'Login to access Percy\'s World';
+                submitBtn.textContent = 'Login';
+                toggleLink.textContent = 'Don\'t have an account? Sign up!';
+                confirmGroup.style.display = 'none';
+            }
+            hideMessage();
+        }
+        
+        document.getElementById('toggleLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleMode();
+        });
+        
+        // Handle form submission
+        document.getElementById('authForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            showSpinner(true);
+            hideMessage();
+            
+            try {
+                if (isSignup) {
+                    // Sign up
+                    if (password !== confirmPassword) {
+                        showMessage('Passwords do not match!', 'error');
+                        showSpinner(false);
+                        return;
+                    }
+                    if (password.length < 6) {
+                        showMessage('Password must be at least 6 characters!', 'error');
+                        showSpinner(false);
+                        return;
+                    }
+                    
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    
+                    // Send verification email
+                    await auth.currentUser.sendEmailVerification();
+                    showMessage('Account created! Check your email to verify your account.', 'success');
+                    
+                } else {
+                    // Login
+                    await auth.signInWithEmailAndPassword(email, password);
+                    showMessage('Login successful!', 'success');
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+                showMessage(getAuthErrorMessage(error.code), 'error');
+            }
+            
+            showSpinner(false);
+        });
+        
+        // Logout function
+        async function logout() {
+            try {
+                await auth.signOut();
+                showMessage('Logged out successfully!', 'success');
+                resetForm();
+            } catch (error) {
+                showMessage('Error logging out: ' + error.message, 'error');
+            }
+        }
+        
+        // Resend verification email
+        async function sendVerification() {
+            try {
+                showSpinner(true);
+                await auth.currentUser.sendEmailVerification();
+                showMessage('Verification email sent! Check your inbox (and spam folder).', 'success');
+                showSpinner(false);
+            } catch (error) {
+                showMessage('Error sending email: ' + error.message, 'error');
+                showSpinner(false);
+            }
+        }
+        
+        // ============================================
+        // 🛠️ HELPER FUNCTIONS
+        // ============================================
+        
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = 'message ' + type;
+            msg.style.display = 'block';
+        }
+        
+        function hideMessage() {
+            document.getElementById('message').style.display = 'none';
+        }
+        
+        function showSpinner(show) {
+            document.getElementById('spinner').style.display = show ? 'block' : 'none';
+            document.getElementById('submitBtn').disabled = show;
+        }
+        
+        function resetForm() {
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('confirmPassword').value = '';
+            isSignup = false;
+            document.getElementById('title').textContent = 'Welcome Back!';
+            document.getElementById('subtitle').textContent = 'Login to access Percy\'s World';
+            document.getElementById('submitBtn').textContent = 'Login';
+            document.getElementById('toggleLink').textContent = 'Don\'t have an account? Sign up!';
+            document.getElementById('confirmPasswordGroup').style.display = 'none';
+        }
+        
+        function getAuthErrorMessage(code) {
+            const messages = {
+                'auth/email-already-in-use': 'This email is already registered!',
+                'auth/invalid-email': 'Please enter a valid email address!',
+                'auth/weak-password': 'Password should be at least 6 characters!',
+                'auth/user-not-found': 'No account found with this email!',
+                'auth/wrong-password': 'Incorrect password!',
+                'auth/too-many-requests': 'Too many attempts. Please try again later!',
+                'auth/invalid-credential': 'Invalid email or password!'
+            };
+            return messages[code] || 'An error occurred. Please try again!';
+        }
+    </script>
+</body>
+</html>
